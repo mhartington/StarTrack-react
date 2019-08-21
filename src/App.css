@@ -1,0 +1,8 @@
+.split-pane-md.split-pane-visible > .split-pane-side {
+  max-width: 375px;
+}
+
+.mh-footer {
+  position: absolute;
+  bottom: 0;
+}

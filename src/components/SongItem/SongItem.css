@@ -1,0 +1,29 @@
+.song-item:hover{
+  cursor: pointer;
+}
+.song-item ion-thumbnail {
+  margin-inline-end: 15px;
+}
+.song-item ion-label h3,
+.song-item ion-label h3 ion-note * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.song-item .index {
+  font-variant-numeric: tabular-nums;
+  width: 22px;
+  text-align: right;
+}
+.song-item ion-note {
+  font-variant-numeric: tabular-nums;
+}
+.song-item .rating {
+  background: #aaa;
+  color: #fff;
+  width: 12px;
+  text-align: center;
+  height: 12px;
+  font-weight: 300;
+  border-radius: 3px;
+  font-size: 9px;
+}

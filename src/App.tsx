@@ -1,37 +1,84 @@
+import {
+  IonApp,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonList,
+  IonMenu,
+  IonMenuToggle,
+  IonPage,
+  IonRouterOutlet,
+  IonSplitPane,
+  IonTitle,
+  IonToolbar,
+  IonFooter
+} from '@ionic/react';
+import { IonReactRouter, ViewManager } from '@ionic/react-router';
+import '@ionic/react/css/ionic.bundle.css';
+import { musicalNotes, search } from 'ionicons/icons';
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonPage, IonRouterOutlet } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import { Route } from 'react-router-dom';
 
-/* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import AlbumPage from './pages/album/Album';
+import BrowsePage from './pages/browse/Browse';
+import LandingPage from './pages/landing/Landing';
+import PlaylistPage from './pages/playlist/Playlist';
+import SearchPage from './pages/search/Search';
 
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
-
-/* Theme variables */
+import { musickitConfig } from './services/musickit-config';
 import './theme/variables.css';
+import './App.css';
+import { TrackPlayer } from './components/TrackPlayer/TrackPlayer';
+
+musickitConfig.configure();
 
 const App: React.FunctionComponent = () => (
   <IonApp>
     <IonReactRouter>
-      <IonPage>
-        <IonRouterOutlet>
-          <Route path="/home" component={Home} exact={true} />
-          <Route exact path="/" render={() => <Redirect to="/home" />} />
-        </IonRouterOutlet>
-      </IonPage>
+      <IonSplitPane contentId="main" when="(min-width: 850px)">
+        <IonMenu contentId="main">
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Star Track</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent>
+            <IonList>
+              <IonMenuToggle autoHide={false}>
+                <IonItem href="/browse">
+                  <IonIcon icon={musicalNotes} slot="start" />
+                  Browse
+                </IonItem>
+              </IonMenuToggle>
+              <IonMenuToggle autoHide={false}>
+                <IonItem href="/search">
+                  <IonIcon icon={search} slot="start" />
+                  Search
+                </IonItem>
+              </IonMenuToggle>
+            </IonList>
+          </IonContent>
+        </IonMenu>
+        <IonPage id="main">
+          <ViewManager>
+            <IonRouterOutlet>
+              <Route exact path="/" component={LandingPage} />
+              <Route exact path="/browse" component={BrowsePage} />
+              <Route exact path="/search" component={SearchPage} />
+              <Route exact path="/album/:albumId" component={AlbumPage} />
+              <Route
+                exact
+                path="/playlist/:playlistId"
+                component={PlaylistPage}
+              />
+            </IonRouterOutlet>
+          </ViewManager>
+        </IonPage>
+      </IonSplitPane>
+      <IonFooter className="mh-footer" translucent={true}>
+        <TrackPlayer />
+      </IonFooter>
     </IonReactRouter>
   </IonApp>
 );

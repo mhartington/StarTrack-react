@@ -1,0 +1,49 @@
+.album-preview-card {
+  display: block;
+  margin: auto;
+  max-width: 170px;
+  padding: 5px;
+}
+
+.album-preview-card ion-card {
+  padding: 0;
+  margin: 0;
+  width: 160px;
+  height: 160px;
+
+}
+
+.album-preview-card lazy-img {
+  object-fit: cover;
+  height: 100%;
+}
+
+.album-preview-card ion-label {
+  margin: 8px 0 16px;
+  display: block;
+  white-space: nowrap;
+}
+
+.album-preview-card ion-label * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album-preview-card .index {
+  font-weight: 800;
+}
+
+.rating {
+  background: #aaa;
+  color: #fff;
+  width: 12px;
+  display: inline-block;
+  text-align: center;
+  height: 12px;
+  font-weight: 300;
+  border-radius: 3px;
+  font-size: 9px;
+  margin-left: 5px;
+  margin-top: -2px;
+  vertical-align: middle;
+}
