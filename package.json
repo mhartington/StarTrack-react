@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@ionic/react": "^4.8.0-rc.0",
+    "@ionic/react": "4.8.0-rc.1",
     "@ionic/react-router": "^4.8.0-rc.0",
     "@types/jest": "24.0.11",
     "@types/node": "11.11.3",

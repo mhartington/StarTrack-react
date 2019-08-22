@@ -1,10 +1,10 @@
 import React from 'react';
 import {
   IonThumbnail,
-  IonItem,
   IonText,
   IonLabel,
-  IonNote
+  IonNote,
+  IonItem
 } from '@ionic/react';
 import { LazyImg } from '../LazyImg/LazyImg';
 import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';

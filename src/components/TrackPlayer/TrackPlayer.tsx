@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { player, PlaybackStates } from '../../services/player';
 import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';
 import {
@@ -16,20 +16,27 @@ import { play, pause, fastforward } from 'ionicons/icons';
 // import { useObservable } from 'rxjs-hooks';
 
 export function TrackPlayer() {
-  player.initPlayer();
-  const isLoading =
-    player.playbackState === PlaybackStates.LOADING ||
-    player.playbackState === PlaybackStates.ENDED ||
-    player.playbackState === PlaybackStates.WAITING ||
-    player.playbackState === PlaybackStates.STALLED;
-  const isNotPlaying = player.playbackState === PlaybackStates.NONE;
-  const currentPlaybacktime = player.currentPlaybackTime;
-  const currentPlaybackDuration = player.currentPlaybackDuration;
+  const [playerState] = useState(() => {
+    player.initPlayer();
+    return {
+      isLoading:
+        player.playbackState === PlaybackStates.LOADING ||
+        player.playbackState === PlaybackStates.ENDED ||
+        player.playbackState === PlaybackStates.WAITING ||
+        player.playbackState === PlaybackStates.STALLED,
+      isNotPlaying: player.playbackState === PlaybackStates.NONE,
+      currentPlaybacktime: player.currentPlaybackTime,
+      currentPlaybackDuration: player.currentPlaybackDuration
+    };
+  });
   return (
     <div className="track-player">
       <div className="song-info">
         <IonThumbnail>
-          <img src={formatArtwork(player.nowPlayingItem.artworkURL, 100)} />
+          <img
+            src={formatArtwork(player.nowPlayingItem.artworkURL, 100)}
+            alt="Song art"
+          />
         </IonThumbnail>
 
         <IonLabel>
@@ -39,14 +46,14 @@ export function TrackPlayer() {
       </div>
       <IonRange
         min={0}
-        max={currentPlaybackDuration}
+        max={playerState.currentPlaybackDuration}
         step={1}
-        value={currentPlaybacktime}
-        disabled={currentPlaybackDuration === 0 || isLoading || isNotPlaying}
+        value={playerState.currentPlaybacktime}
+        disabled={playerState.currentPlaybackDuration === 0 || playerState.isLoading || playerState.isNotPlaying}
       />
       <div className="song-actions">
         <IonButton color="primary" fill="clear">
-          {isLoading ? (
+          {playerState.isLoading ? (
             <IonSpinner />
           ) : (
             <IonIcon

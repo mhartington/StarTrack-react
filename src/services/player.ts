@@ -1,6 +1,7 @@
 import { Observable, from, EMPTY } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { musickitConfig } from './musickit-config';
+import React from 'react';
 
 declare let MusicKit: any;
 export enum PlaybackStates {
@@ -46,9 +47,6 @@ export class PlayerService {
       }
     ]
   };
-
-  constructor() {
-  }
 
   initPlayer() {
     // await musickitConfig.init();
@@ -126,9 +124,6 @@ export class PlayerService {
   }
 
   skipToNextItem(): Observable<any> {
-    // if ( this.repeatMode === 1 ) {
-    //   return this.seekToTime( 0 );
-    // }
     return from(this.player.skipToNextItem());
   }
 

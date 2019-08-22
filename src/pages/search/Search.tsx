@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import {
   IonHeader,
@@ -26,9 +26,9 @@ export default function SearchPage(props: RouteComponentProps) {
     playlists: null
   });
   const onInput$ = new Subject<string>();
-  useIonViewWillEnter(() => {
+  useEffect(() => {
     setSearchTerm(props.location.search.slice(1));
-  });
+  }, [props.location.search]);
   onInput$
     .pipe(
       filter((term: any) => {

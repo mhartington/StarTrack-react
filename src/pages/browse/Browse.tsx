@@ -6,7 +6,6 @@ import {
   IonContent,
   IonList,
   IonSpinner,
-  useIonViewWillEnter,
   IonCol,
   IonRow,
   IonGrid,
