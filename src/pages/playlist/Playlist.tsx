@@ -29,7 +29,6 @@ export default function PlaylistPage(props: any) {
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref="/browse" />
-            <IonMenuButton />
           </IonButtons>
           <IonTitle>
             {state.collection ? state.collection.attributes.name : ''}
