@@ -10,9 +10,9 @@ import {
   IonItemGroup,
   IonLabel,
   IonList,
-  useIonViewWillEnter,
   IonButtons,
-  IonMenuButton
+  IonMenuButton,
+  IonSpinner
 } from '@ionic/react';
 import { Subject } from 'rxjs';
 import { filter, debounceTime, switchMap, tap } from 'rxjs/operators';
@@ -23,20 +23,30 @@ export default function SearchPage(props: RouteComponentProps) {
   const [musicState, setMusicState] = useState({
     albums: null,
     songs: null,
-    playlists: null
+    playlists: null,
+    isLoading: false
   });
   const onInput$ = new Subject<string>();
-  useEffect(() => {
-    setSearchTerm(props.location.search.slice(1));
-  }, [props.location.search]);
+  useEffect(
+    () => {
+      setSearchTerm(props.location.search.slice(1));
+    },
+    [props.location.search]
+  );
   onInput$
     .pipe(
       filter((term: any) => {
         if (term) {
+          setMusicState({ ...musicState, isLoading: true });
           return term;
         } else {
           props.history.replace({ search: '' });
-          setMusicState({ albums: null, songs: null, playlists: null });
+          setMusicState({
+            albums: null,
+            songs: null,
+            playlists: null,
+            isLoading: false
+          });
         }
       }),
       debounceTime(1000),
@@ -51,11 +61,12 @@ export default function SearchPage(props: RouteComponentProps) {
         setMusicState({
           songs: results['songs'] ? results['songs']['data'] : null,
           albums: results['albums'] ? results['albums']['data'] : null,
-          playlists: results['playlists'] ? results['playlists']['data'] : null
+          playlists: results['playlists'] ? results['playlists']['data'] : null,
+          isLoading: false
         });
       },
       (err: any) => console.log(err),
-        () => console.log('don')
+      () => console.log('don')
     );
   const handleInput = (e: any) => {
     setSearchTerm(e.target.value);
@@ -77,6 +88,11 @@ export default function SearchPage(props: RouteComponentProps) {
       </IonHeader>
       <IonContent>
         <IonList>
+          {musicState.isLoading ? (
+            <div className="ion-text-center ion-padding">
+              <IonSpinner />
+            </div>
+          ) : null}
           {musicState.songs ? (
             <IonItemGroup>
               <IonItemDivider sticky>

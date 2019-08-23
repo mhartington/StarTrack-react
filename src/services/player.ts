@@ -1,7 +1,6 @@
 import { Observable, from, EMPTY } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { musickitConfig } from './musickit-config';
-import React from 'react';
 
 declare let MusicKit: any;
 export enum PlaybackStates {

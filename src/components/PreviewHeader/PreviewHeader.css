@@ -3,6 +3,7 @@
   background-repeat: no-repeat no-repeat;
   background-size: cover;
   background-position: center center;
+  height: 300px;
 }
 .preview-header .artwork-header {
   display: flex;
@@ -40,6 +41,10 @@
 .preview-header .album-detail {
   padding: 0 16px;
   line-height: 0.6;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical
 }
 .preview-header .album-detail h3 {
   font-weight: 800;

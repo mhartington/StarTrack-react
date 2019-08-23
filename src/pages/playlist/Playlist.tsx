@@ -3,7 +3,6 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
-  IonPage,
   IonContent,
   IonList,
   IonSpinner,
@@ -25,7 +24,7 @@ export default function PlaylistPage(props: any) {
     },
   );
   return (
-    <IonPage className="album-page">
+    <>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -41,7 +40,7 @@ export default function PlaylistPage(props: any) {
         <PreviewHeader album={state.collection ? state.collection : {}} />
         <IonList>
           {state.isLoading ? (
-            <div className="ion-text-center">
+            <div className="ion-text-center ion-padding">
               <IonSpinner />
             </div>
           ) : (
@@ -53,6 +52,6 @@ export default function PlaylistPage(props: any) {
           )}
         </IonList>
       </IonContent>
-    </IonPage>
+    </>
   );
 }

@@ -3,7 +3,6 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
-  IonPage,
   IonContent,
   IonList,
   IonSpinner,
@@ -13,7 +12,6 @@ import {
 } from '@ionic/react';
 import { musicKitService } from '../../services/musickit-service';
 import { PreviewHeader } from '../../components/PreviewHeader/PreviewHeader';
-import './Album.css';
 import SongItem from '../../components/SongItem/SongItem';
 export default function AlbumPage(props: any) {
   const [state, setState] = useState({ isLoading: true, collection: null });
@@ -25,7 +23,7 @@ export default function AlbumPage(props: any) {
       });
     });
   return (
-    <IonPage className="album-page">
+    <>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -40,7 +38,7 @@ export default function AlbumPage(props: any) {
         <PreviewHeader album={state.collection ? state.collection : {}} />
         <IonList>
           {state.isLoading ? (
-            <div className="ion-text-center">
+            <div className="ion-text-center ion-padding">
               <IonSpinner />
             </div>
           ) : (
@@ -52,6 +50,6 @@ export default function AlbumPage(props: any) {
           )}
         </IonList>
       </IonContent>
-    </IonPage>
+    </>
   );
 }
