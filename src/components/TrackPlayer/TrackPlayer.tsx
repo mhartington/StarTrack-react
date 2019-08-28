@@ -58,6 +58,7 @@ export function TrackPlayer() {
           ) : (
             <IonIcon
               slot="icon-only"
+              ariaLabel="Play or Pause button"
               icon={
                 player.playbackState === PlaybackStates.PLAYING ? play : pause
               }

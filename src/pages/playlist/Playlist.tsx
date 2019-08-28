@@ -8,7 +8,6 @@ import {
   IonSpinner,
   IonBackButton,
   IonButtons,
-  IonMenuButton,
   useIonViewWillEnter
 } from '@ionic/react';
 import { musicKitService } from '../../services/musickit-service';

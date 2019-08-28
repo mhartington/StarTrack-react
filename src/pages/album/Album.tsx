@@ -39,7 +39,7 @@ export default function AlbumPage(props: any) {
         <IonList>
           {state.isLoading ? (
             <div className="ion-text-center ion-padding">
-              <IonSpinner />
+              <IonSpinner  color="primary" />
             </div>
           ) : (
             state.collection.relationships.tracks.data.map(

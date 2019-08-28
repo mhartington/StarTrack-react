@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import {
   IonHeader,
@@ -15,10 +15,10 @@ import {
   IonSpinner
 } from '@ionic/react';
 import { Subject } from 'rxjs';
-import { filter, debounceTime, switchMap, tap } from 'rxjs/operators';
+import { filter, debounceTime, switchMap } from 'rxjs/operators';
 import { musicKitService } from '../../services/musickit-service';
 import SongItem from '../../components/SongItem/SongItem';
-export default function SearchPage(props: RouteComponentProps) {
+export default function SearchPage(_props: RouteComponentProps) {
   const [searctTerm, setSearchTerm] = useState('');
   const [musicState, setMusicState] = useState({
     albums: null,
@@ -27,12 +27,12 @@ export default function SearchPage(props: RouteComponentProps) {
     isLoading: false
   });
   const onInput$ = new Subject<string>();
-  useEffect(
-    () => {
-      setSearchTerm(props.location.search.slice(1));
-    },
-    [props.location.search]
-  );
+  // useEffect(
+  //   () => {
+  //     setSearchTerm(props.location.search.slice(1));
+  //   },
+  //   [props.location.search]
+  // );
   onInput$
     .pipe(
       filter((term: any) => {
@@ -40,7 +40,7 @@ export default function SearchPage(props: RouteComponentProps) {
           setMusicState({ ...musicState, isLoading: true });
           return term;
         } else {
-          props.history.replace({ search: '' });
+          // props.history.replace({ search: '' });
           setMusicState({
             albums: null,
             songs: null,
@@ -50,10 +50,10 @@ export default function SearchPage(props: RouteComponentProps) {
         }
       }),
       debounceTime(1000),
-      tap(term => {
-        props.history.replace({ search: `${term}` });
-        return term;
-      }),
+      // tap(term => {
+      //   // props.history.replace({ search: `${term}` });
+      //   return term;
+      // }),
       switchMap((term: string) => musicKitService.search(term))
     )
     .subscribe(
@@ -90,7 +90,7 @@ export default function SearchPage(props: RouteComponentProps) {
         <IonList>
           {musicState.isLoading ? (
             <div className="ion-text-center ion-padding">
-              <IonSpinner />
+              <IonSpinner  color="primary" />
             </div>
           ) : null}
           {musicState.songs ? (
