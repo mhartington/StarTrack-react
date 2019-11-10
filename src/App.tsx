@@ -127,7 +127,6 @@ export default function App() {
                     </IonItem>
                   </IonMenuToggle>
                 )}
-                    <IonItem>Is Logged in:  {JSON.stringify(isLoggedIn)}</IonItem>
               </IonList>
             </IonContent>
           </IonMenu>
