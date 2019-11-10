@@ -1,33 +1,20 @@
 import React, { useState } from 'react';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonSpinner,
-  IonCol,
-  IonRow,
-  IonGrid,
-  IonButtons,
-  IonMenuButton,
-  useIonViewDidEnter
-} from '@ionic/react';
+import { useDispatch } from 'react-redux';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner, IonCol, IonRow, IonGrid, IonButtons, IonMenuButton, useIonViewDidEnter, IonPage } from '@ionic/react';
 import { musicKitService } from '../../services/musickit-service';
 import AlbumPreviewItem from '../../components/AlbumPreviewItem/AlbumPreviewItem';
 import { Link } from 'react-router-dom';
 import SongItem from '../../components/SongItem/SongItem';
-import { player } from '../../services/player';
+
 export default function BrowsePage() {
+  const dispatch = useDispatch()
   const [state, setState] = useState({
     isLoading: true,
     topAlbums: null,
     topPlaylists: null,
     topSongs: null
   });
-  const playSong = (index: number) => {
-    console.log(index);
-    player.setQueueFromItems(state.topSongs, index).subscribe();
-  };
+  const playSong = (index: number) => dispatch({ type:'play', payload: {queue: state.topSongs, startIndex: index} });
   useIonViewDidEnter(() => {
     musicKitService.fetchChart().then(res =>
       setState({
@@ -39,7 +26,7 @@ export default function BrowsePage() {
     );
   });
   return (
-    <>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -62,7 +49,7 @@ export default function BrowsePage() {
                 >
                   Top Albums
                 </h1>
-                <IonRow className="ion-justify-content-start">
+                  <IonRow className="ion-justify-content-start">
                   {state.topAlbums.map((album: any, idx: number) => (
                     <IonCol
                       sizeMd="6"
@@ -127,6 +114,6 @@ export default function BrowsePage() {
           </div>
         )}
       </IonContent>
-    </>
+    </IonPage>
   );
 }

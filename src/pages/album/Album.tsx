@@ -1,29 +1,25 @@
 import React, { useState } from 'react';
-import {
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonContent,
-  IonList,
-  IonSpinner,
-  IonBackButton,
-  IonButtons,
-  useIonViewDidEnter
-} from '@ionic/react';
+import { useDispatch } from 'react-redux';
+import { IonHeader, IonTitle, IonToolbar, IonContent, IonList, IonSpinner, IonBackButton, IonButtons, useIonViewDidEnter, IonPage } from '@ionic/react';
 import { musicKitService } from '../../services/musickit-service';
 import { PreviewHeader } from '../../components/PreviewHeader/PreviewHeader';
 import SongItem from '../../components/SongItem/SongItem';
 export default function AlbumPage(props: any) {
   const [state, setState] = useState({ isLoading: true, collection: null });
-  useIonViewDidEnter(
-    () => {
-      const id = props.match.params.albumId;
-      musicKitService.fetchAlbum(id).then(res => {
-        setState({ isLoading: false, collection: res });
-      });
+  const dispatch = useDispatch()
+  useIonViewDidEnter(() => {
+    const id = props.match.params.albumId;
+    musicKitService.fetchAlbum(id).then(res => {
+      setState({ isLoading: false, collection: res });
+    });
+  });
+  const playSong = (index: number) =>
+    dispatch({
+      type: 'play',
+      payload: { queue: state.collection, startIndex: index }
     });
   return (
-    <>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -39,17 +35,22 @@ export default function AlbumPage(props: any) {
         <IonList>
           {state.isLoading ? (
             <div className="ion-text-center ion-padding">
-              <IonSpinner  color="primary" />
+              <IonSpinner color="primary" />
             </div>
           ) : (
             state.collection.relationships.tracks.data.map(
               (song: any, idx: number) => (
-                <SongItem song={song} index={idx} key={idx} />
+                <SongItem
+                  song={song}
+                  index={idx}
+                  key={idx}
+                  onClick={() => playSong(idx)}
+                />
               )
             )
           )}
         </IonList>
       </IonContent>
-    </>
+    </IonPage>
   );
 }

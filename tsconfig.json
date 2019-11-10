@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -14,7 +18,19 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "plugins": [{ "name": "typescript-eslint-language-service", "watchDir": ["src"] }]
+    "plugins": [
+      {
+        "name": "typescript-eslint-language-service",
+        "watchDir": [
+          "src"
+        ]
+      }
+    ]
   },
-  "include": ["src"]
+  "files": [
+    "src/index.tsx"
+  ],
+  "include": [
+    "src"
+  ]
 }

@@ -25,9 +25,7 @@ export function PreviewHeader({ album }: { album: any }) {
   );
 
   const formatDuration = (val: number) => {
-    const { hours, minutes } = (window as any).MusicKit.formattedMilliseconds(
-      val
-    );
+    const { hours, minutes } = (window as any).MusicKit.formattedMilliseconds( val);
     const hourTime = hours === 0 ? `` : `${hours} hours, `;
     const minutesTime = `${minutes} minutes`;
     return `${hourTime} ${minutesTime} `;

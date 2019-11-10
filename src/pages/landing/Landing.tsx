@@ -5,12 +5,13 @@ import {
   IonHeader,
   IonIcon,
   IonButton,
-  IonContent
+  IonContent,
+  IonPage
 } from '@ionic/react';
 import { musicalNotes } from 'ionicons/icons';
 export default function LandingPage(props: any) {
   return (
-    <>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Star Track </IonTitle>
@@ -30,6 +31,6 @@ export default function LandingPage(props: any) {
           Get Started
         </IonButton>
       </IonContent>
-    </>
+        </IonPage>
   );
 }

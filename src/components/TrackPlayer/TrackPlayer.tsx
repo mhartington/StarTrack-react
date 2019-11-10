@@ -1,71 +1,67 @@
-import React, { useState } from 'react';
-import { player, PlaybackStates } from '../../services/player';
-import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';
 import {
-  IonThumbnail,
-  IonNote,
-  IonLabel,
-  IonRange,
   IonButton,
+  IonIcon,
+  IonLabel,
+  IonNote,
+  IonRange,
   IonSpinner,
-  IonIcon
+  IonThumbnail
 } from '@ionic/react';
+import { fastforward, pause, play } from 'ionicons/icons';
+import React from 'react';
+import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';
+
+import { useSelector, useDispatch } from 'react-redux';
+
 import './TrackPlayer.css';
-import { play, pause, fastforward } from 'ionicons/icons';
-// import { from } from 'rxjs';
-// import { useObservable } from 'rxjs-hooks';
+import { PlaybackStates } from '../../types';
 
 export function TrackPlayer() {
-  const [playerState] = useState(() => {
-    player.initPlayer();
-    return {
-      isLoading:
-        player.playbackState === PlaybackStates.LOADING ||
-        player.playbackState === PlaybackStates.ENDED ||
-        player.playbackState === PlaybackStates.WAITING ||
-        player.playbackState === PlaybackStates.STALLED,
-      isNotPlaying: player.playbackState === PlaybackStates.NONE,
-      currentPlaybacktime: player.currentPlaybackTime,
-      currentPlaybackDuration: player.currentPlaybackDuration
-    };
-  });
+  const store: any = useSelector(state => state);
+  const dispatch = useDispatch();
+  const togglePlay = () => dispatch({ type: 'togglePlay' });
+  const next = () => dispatch({ type: 'next' });
   return (
     <div className="track-player">
       <div className="song-info">
         <IonThumbnail>
           <img
-            src={formatArtwork(player.nowPlayingItem.artworkURL, 100)}
+            src={formatArtwork(store.nowPlayingItem.artworkURL, 100)}
             alt="Song art"
           />
         </IonThumbnail>
 
         <IonLabel>
-          <p>{player.nowPlayingItem.title}</p>
-          <IonNote>{player.nowPlayingItem.artistName}</IonNote>
+          <p>{store.nowPlayingItem.title}</p>
+          <IonNote>{store.nowPlayingItem.artistName}</IonNote>
         </IonLabel>
       </div>
       <IonRange
         min={0}
-        max={playerState.currentPlaybackDuration}
+        max={store.playbackDuration}
         step={1}
-        value={playerState.currentPlaybacktime}
-        disabled={playerState.currentPlaybackDuration === 0 || playerState.isLoading || playerState.isNotPlaying}
+        value={store.playbackProgress}
+        disabled={
+          store.playbackDuration === 0 || store.isLoading || store.isNotPlaying
+        }
       />
       <div className="song-actions">
-        <IonButton color="primary" fill="clear">
-          {playerState.isLoading ? (
+        <IonButton color="primary" fill="clear" onClick={() => togglePlay()}>
+          {store.playbackState === PlaybackStates.LOADING ||
+          store.playbackState === PlaybackStates.ENDED ||
+          store.playbackState === PlaybackStates.WAITING ||
+          store.playbackState === PlaybackStates.STALLED ? (
             <IonSpinner />
           ) : (
             <IonIcon
-              slot="icon-only"
               ariaLabel="Play or Pause button"
               icon={
-                player.playbackState === PlaybackStates.PLAYING ? play : pause
+                store.playbackState === PlaybackStates.PLAYING ? pause : play
               }
             />
           )}
         </IonButton>
-        <IonButton color="primary" fill="clear">
+        <IonButton color="primary" fill="clear" onClick={() => next()}>
           <IonIcon icon={fastforward} slot="icon-only" />
         </IonButton>
       </div>

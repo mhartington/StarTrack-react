@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import {
   IonHeader,
@@ -12,7 +13,8 @@ import {
   IonList,
   IonButtons,
   IonMenuButton,
-  IonSpinner
+  IonSpinner,
+  IonPage
 } from '@ionic/react';
 import { Subject } from 'rxjs';
 import { filter, debounceTime, switchMap } from 'rxjs/operators';
@@ -26,6 +28,7 @@ export default function SearchPage(_props: RouteComponentProps) {
     playlists: null,
     isLoading: false
   });
+  const dispatch = useDispatch();
   const onInput$ = new Subject<string>();
   // useEffect(
   //   () => {
@@ -33,6 +36,11 @@ export default function SearchPage(_props: RouteComponentProps) {
   //   },
   //   [props.location.search]
   // );
+  const playSong = (index: number) =>
+    dispatch({
+      type: 'play',
+      payload: { queue: musicState.songs, startIndex: index }
+    });
   onInput$
     .pipe(
       filter((term: any) => {
@@ -74,7 +82,7 @@ export default function SearchPage(_props: RouteComponentProps) {
   };
 
   return (
-    <>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -90,7 +98,7 @@ export default function SearchPage(_props: RouteComponentProps) {
         <IonList>
           {musicState.isLoading ? (
             <div className="ion-text-center ion-padding">
-              <IonSpinner  color="primary" />
+              <IonSpinner color="primary" />
             </div>
           ) : null}
           {musicState.songs ? (
@@ -98,8 +106,8 @@ export default function SearchPage(_props: RouteComponentProps) {
               <IonItemDivider sticky>
                 <IonLabel>Songs</IonLabel>
               </IonItemDivider>
-              {musicState.songs.map((song: any) => (
-                <SongItem song={song} key={song.id} />
+              {musicState.songs.map((song: any, idx) => (
+                <SongItem song={song} key={idx} onClick={() => playSong(idx)} />
               ))}
             </IonItemGroup>
           ) : null}
@@ -129,6 +137,6 @@ export default function SearchPage(_props: RouteComponentProps) {
           ) : null}
         </IonList>
       </IonContent>
-    </>
+    </IonPage>
   );
 }

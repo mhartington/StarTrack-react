@@ -3,13 +3,7 @@ import { IonCard, IonLabel, IonNote } from '@ionic/react';
 import { LazyImg } from '../LazyImg/LazyImg';
 import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';
 import './AlbumPreviewItem.css';
-export default function AlbumPreviewItem({
-  album,
-  index
-}: {
-  album: any;
-  index: number;
-}) {
+export default function AlbumPreviewItem({ album, index }: { album: any; index: number; }) {
   return (
     <div className="album-preview-card">
       <IonCard>
