@@ -81,7 +81,7 @@ function rootReducer( state = defaultState, action: { type: string; payload?: an
       return state;
   }
 }
-export default createStore( rootReducer, (window as any).__REDUX_DEVTOOLS_EXTENSION__());
+export default createStore( rootReducer);
 
 const setQueueFromItems = (items: any[], startPosition = 0) => {
   items.map(item => (item.container = { id: item.id }));
