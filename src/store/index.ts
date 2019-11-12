@@ -41,6 +41,11 @@ function rootReducer( state = defaultState, action: { type: string; payload?: an
       setQueueFromItems(action.payload.queue, action.payload.startIndex);
       state = { ...state, queuePosition: action.payload.startIndex };
       return state;
+    case 'playAlbum':
+      toggleShuffle(action.payload.shouldShuffle);
+      console.log(action.payload)
+      setQueueFromItems(action.payload.collection.relationships.tracks.data);
+      return state;
 
     case 'togglePlay':
       if (musicKitGlobal.player.playbackState === PlaybackStates.PAUSED) {
@@ -81,6 +86,7 @@ function rootReducer( state = defaultState, action: { type: string; payload?: an
       return state;
   }
 }
+
 export default createStore( rootReducer);
 
 const setQueueFromItems = (items: any[], startPosition = 0) => {
@@ -96,6 +102,14 @@ const playbackStateDidChange = (state, payload) => {
   const playbackState = PlaybackStates[PlaybackStates[payload.state]];
   return { ...state, playbackState };
 };
+const toggleShuffle = (shouldShuffle: boolean) => {
+  if(!!shouldShuffle){
+
+    musicKitGlobal.player.shuffleMode = 1
+  } else {
+    musicKitGlobal.player.shuffleMode = 0
+  }
+}
 
 // Global even listeners
 const mediaItemDidChange = (state, payload) => {
@@ -105,11 +119,6 @@ const next = () => {
   setTimeout(() => {musicKitGlobal.player.skipToNextItem()}, 0)
   return
 }
-
-// const mediaPlaybackError = (event: any) => {
-//   console.log('mediaPlayBackError', event);
-// };
-
 const queueItemsDidChange = (state, payload) => {
   return {
     ...state,
@@ -123,3 +132,8 @@ const queuePositionDidChange = (state, payload) => {
     queue: musicKitGlobal.player.queue.items.slice(payload.position + 1)
   };
 };
+
+
+// const mediaPlaybackError = (event: any) => {
+//   console.log('mediaPlayBackError', event);
+// };

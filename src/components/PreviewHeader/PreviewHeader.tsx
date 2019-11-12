@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { LazyImg } from '../LazyImg/LazyImg';
 import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';
 import { play, more, shuffle } from 'ionicons/icons';
 import { IonButton, IonIcon } from '@ionic/react';
 import './PreviewHeader.css';
 export function PreviewHeader({ album }: { album: any }) {
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     collection: null,
     duration: null
@@ -23,6 +25,10 @@ export function PreviewHeader({ album }: { album: any }) {
     },
     [album]
   );
+
+  const playAlbum = (shouldShuffle: boolean) => {
+    dispatch({ type: 'playAlbum', payload: {collection: state.collection, shouldShuffle} })
+  }
 
   const formatDuration = (val: number) => {
     const { hours, minutes } = (window as any).MusicKit.formattedMilliseconds( val);
@@ -72,11 +78,11 @@ export function PreviewHeader({ album }: { album: any }) {
                   {state.collection.relationships.tracks.data.length} Songs,{' '}
                   {formatDuration(state.duration)}
                 </p>
-                <IonButton fill="outline">
+                <IonButton fill="outline" onClick={() => playAlbum(false)}>
                   <IonIcon slot="start" icon={play} />
                   Play
                 </IonButton>
-                <IonButton fill="outline">
+                <IonButton fill="outline" onClick={() => playAlbum(false)}>
                   <IonIcon icon={shuffle} slot="start" />
                   Shuffle
                 </IonButton>
