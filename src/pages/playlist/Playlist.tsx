@@ -28,7 +28,7 @@ export default function PlaylistPage(props: any) {
   const playSong = (index: number) =>
     dispatch({
       type: 'play',
-      payload: { queue: state.collection, startIndex: index }
+      payload: { queue: state.collection.relationships.tracks.data, startIndex: index }
     });
   return (
     <IonPage>
