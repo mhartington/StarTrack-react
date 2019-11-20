@@ -1,60 +1,68 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { IonHeader, IonContent, IonToolbar, IonTitle, IonSearchbar, IonItemDivider, IonItemGroup, IonLabel, IonList, IonButtons, IonMenuButton, IonSpinner, IonPage } from '@ionic/react';
-import { Subject } from 'rxjs';
-import { filter, debounceTime, switchMap, tap } from 'rxjs/operators';
+import {
+  IonHeader,
+  IonContent,
+  IonToolbar,
+  IonTitle,
+  IonSearchbar,
+  IonItemDivider,
+  IonItemGroup,
+  IonLabel,
+  IonList,
+  IonButtons,
+  IonMenuButton,
+  IonSpinner,
+  IonPage
+} from '@ionic/react';
 import { musicKitService } from '../../services/musickit-service';
 import SongItem from '../../components/SongItem/SongItem';
+import useDebounce from '../../hooks/useDebounce';
+
 export default function SearchPage(_props: RouteComponentProps) {
-
   const [searchTerm, setSearchTerm] = useState(_props.location.search.slice(1));
-  /* const searchRef = useRef(null); */
-
-  const [musicState, setMusicState] = useState({ albums: null, songs: null, playlists: null, isLoading: false });
+  const [musicState, setMusicState] = useState({
+    albums: null,
+    songs: null,
+    playlists: null,
+    isLoading: false
+  });
   const dispatch = useDispatch();
-  const onInput$ = new Subject<string>();
-  const playSong = (index: number) => dispatch({ type: 'play', payload: { queue: musicState.songs, startIndex: index } });
 
-  onInput$
-    .pipe(
-      filter((term: any) => {
-        if (term) {
-          setMusicState({ ...musicState, isLoading: true });
-          return term;
-        } else {
-          _props.history.replace({ search: '' });
+  const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+  const playSong = (index: number) => dispatch({ type: 'play', payload: { queue: musicState.songs, startIndex: index } });
+  useEffect( () => {
+      if (debouncedSearchTerm) {
+        _props.history.replace({ search: debouncedSearchTerm });
+        setMusicState({ ...musicState, isLoading: true });
+        musicKitService.search(debouncedSearchTerm).then(results => {
           setMusicState({
-            albums: null,
-            songs: null,
-            playlists: null,
+            songs: results['songs'] ? results['songs']['data'] : null,
+            albums: results['albums'] ? results['albums']['data'] : null,
+            playlists: results['playlists']
+              ? results['playlists']['data']
+              : null,
             isLoading: false
           });
-        }
-      }),
-      debounceTime(1000),
-      tap(term => {
-        _props.history.replace({ search: `${term}` });
-        return term;
-      }),
-      switchMap((term: string) => musicKitService.search(term))
-    )
-    .subscribe(
-      (results: any) => {
-        setMusicState({
-          songs: results['songs'] ? results['songs']['data'] : null,
-          albums: results['albums'] ? results['albums']['data'] : null,
-          playlists: results['playlists'] ? results['playlists']['data'] : null,
-          isLoading: false
         });
-      },
-      (err: any) => console.log(err),
-      () => console.log('don')
-    );
-  const handleInput = (e: any) => {
-    /* setSearchTerm(e.target.value); */
-    // console.log("ON INPUT")
-    onInput$.next(e.target.value);
+      }
+    }, [debouncedSearchTerm]);
+
+  const handleInput = async (e: any) => {
+    const val = e.target.value;
+    if (!val) {
+      _props.history.replace({ search: '' });
+      setMusicState({
+        albums: null,
+        songs: null,
+        playlists: null,
+        isLoading: false
+      });
+      setSearchTerm('');
+      return;
+    }
+    setSearchTerm(val);
   };
 
   return (
@@ -67,7 +75,11 @@ export default function SearchPage(_props: RouteComponentProps) {
           <IonTitle>Search</IonTitle>
         </IonToolbar>
         <IonToolbar>
-          <IonSearchbar value={searchTerm} onIonChange={e => handleInput(e)} />
+          <IonSearchbar
+            value={searchTerm}
+            debounce={0}
+            onIonChange={e => handleInput(e)}
+          />
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -82,7 +94,7 @@ export default function SearchPage(_props: RouteComponentProps) {
               <IonItemDivider sticky>
                 <IonLabel>Songs</IonLabel>
               </IonItemDivider>
-              {musicState.songs.map((song: any, idx) => (
+              {musicState.songs.map((song: any, idx: number) => (
                 <SongItem song={song} key={idx} onClick={() => playSong(idx)} />
               ))}
             </IonItemGroup>

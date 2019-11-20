@@ -1,8 +1,5 @@
 import { musickitConfig } from './musickit-config';
-import { from, Observable } from 'rxjs';
 class MusickitService {
-
-
   fetchLibrarySongs(offset: number): Promise<any> {
     return musickitConfig.musicKit.api.library.songs(null, { limit: 100, offset: offset });
   }
@@ -39,12 +36,12 @@ class MusickitService {
     })
   }
 
-  search(query: string): Observable<any> {
+  search(query: string): Promise<any> {
     const searchTypes = ['songs', 'albums', 'artists', 'playlists'];
-    return  from(musickitConfig.musicKit.api.search(query, {
+    return  musickitConfig.musicKit.api.search(query, {
       types: searchTypes,
       limit: 50
-    }))
+    })
   }
 
   searchLibrary(query: string): Promise<any> {
