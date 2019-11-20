@@ -12,13 +12,13 @@ import React from 'react';
 import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';
 
 import { useSelector, useDispatch } from 'react-redux';
-
 import './TrackPlayer.css';
 import { PlaybackStates } from '../../types';
 
 export function TrackPlayer() {
   const store: any = useSelector(state => state);
   const dispatch = useDispatch();
+
   const togglePlay = () => dispatch({ type: 'togglePlay' });
   const next = () => dispatch({ type: 'next' });
   return (

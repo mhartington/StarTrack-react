@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import { PlaybackStates } from '../types';
-const musicKitGlobal = (window as any).MusicKit.getInstance();
-const musicKitInstance = (window as any).MusicKit.getInstance();
+let musicKitGlobal = (window as any).MusicKit.getInstance();
+let musicKitInstance = (window as any).MusicKit.getInstance();
 
 const defaultState = {
   bitrate: 256,
@@ -34,7 +34,6 @@ const defaultState = {
     ]
   }
 };
-
 function rootReducer( state = defaultState, action: { type: string; payload?: any }) {
   switch (action.type) {
     case 'play':
@@ -87,7 +86,7 @@ function rootReducer( state = defaultState, action: { type: string; payload?: an
   }
 }
 
-export default createStore( rootReducer);
+export default createStore(rootReducer);
 
 const setQueueFromItems = (items: any[], startPosition = 0) => {
   items.map(item => (item.container = { id: item.id }));

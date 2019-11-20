@@ -1,20 +1,37 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner, IonCol, IonRow, IonGrid, IonButtons, IonMenuButton, useIonViewDidEnter, IonPage } from '@ionic/react';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonSpinner,
+  IonCol,
+  IonRow,
+  IonGrid,
+  IonButtons,
+  IonMenuButton,
+  useIonViewDidEnter,
+  IonPage
+} from '@ionic/react';
 import { musicKitService } from '../../services/musickit-service';
 import AlbumPreviewItem from '../../components/AlbumPreviewItem/AlbumPreviewItem';
 import { Link } from 'react-router-dom';
 import SongItem from '../../components/SongItem/SongItem';
 
 export default function BrowsePage() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     isLoading: true,
     topAlbums: null,
     topPlaylists: null,
     topSongs: null
   });
-  const playSong = (index: number) => dispatch({ type:'play', payload: {queue: state.topSongs, startIndex: index} });
+  const playSong = (index: number) =>
+    dispatch({
+      type: 'play',
+      payload: { queue: state.topSongs, startIndex: index }
+    });
   useIonViewDidEnter(() => {
     musicKitService.fetchChart().then(res =>
       setState({
@@ -40,19 +57,23 @@ export default function BrowsePage() {
           <>
             <div className="topAlbum ion-padding">
               <IonGrid fixed={true} className="ion-no-padding">
-                <h1
-                  style={{
-                    fontWeight: 700,
-                    marginTop: 5,
-                    marginBottom: 20
-                  }}
-                >
-                  Top Albums
-                </h1>
-                  <IonRow className="ion-justify-content-start">
+                <IonRow>
+                  <IonCol>
+                    <h1
+                      style={{
+                        fontWeight: 700,
+                        marginTop: 5,
+                        marginBottom: 20
+                      }}
+                    >
+                      Top Albums
+                    </h1>
+                  </IonCol>
+                </IonRow>
+                <IonRow className="ion-justify-content-start">
                   {state.topAlbums.map((album: any, idx: number) => (
                     <IonCol
-                      sizeMd="6"
+                      sizeMd="4"
                       sizeLg="4"
                       sizeXl="3"
                       key={album.id}

@@ -11,8 +11,16 @@ export function PreviewHeader({ album }: { album: any }) {
     collection: null,
     duration: null
   });
-  useEffect(
-    () => {
+  const playAlbum = (shouldShuffle: boolean) => {
+    dispatch({ type: 'playAlbum', payload: {collection: state.collection, shouldShuffle} })
+  }
+  const formatDuration = (val: number) => {
+    const { hours, minutes } = (window as any).MusicKit.formattedMilliseconds( val);
+    const hourTime = hours === 0 ? `` : `${hours} hours, `;
+    const minutesTime = `${minutes} minutes`;
+    return `${hourTime} ${minutesTime} `;
+  };
+  useEffect( () => {
       if (Object.keys(album).length !== 0) {
         let duration = 0;
         for (const song of album.relationships.tracks.data) {
@@ -22,20 +30,7 @@ export function PreviewHeader({ album }: { album: any }) {
         }
         setState({ collection: album, duration });
       }
-    },
-    [album]
-  );
-
-  const playAlbum = (shouldShuffle: boolean) => {
-    dispatch({ type: 'playAlbum', payload: {collection: state.collection, shouldShuffle} })
-  }
-
-  const formatDuration = (val: number) => {
-    const { hours, minutes } = (window as any).MusicKit.formattedMilliseconds( val);
-    const hourTime = hours === 0 ? `` : `${hours} hours, `;
-    const minutesTime = `${minutes} minutes`;
-    return `${hourTime} ${minutesTime} `;
-  };
+    },[album]);
 
   return (
     <div
@@ -82,7 +77,7 @@ export function PreviewHeader({ album }: { album: any }) {
                   <IonIcon slot="start" icon={play} />
                   Play
                 </IonButton>
-                <IonButton fill="outline" onClick={() => playAlbum(false)}>
+                <IonButton fill="outline" onClick={() => playAlbum(true)}>
                   <IonIcon icon={shuffle} slot="start" />
                   Shuffle
                 </IonButton>

@@ -1,42 +1,37 @@
-import React, { useState } from 'react';
-import {
-  IonApp,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonList,
-  IonMenu,
-  IonMenuToggle,
-  IonPage,
-  IonRouterOutlet,
-  IonSplitPane,
-  IonTitle,
-  IonToolbar,
-  IonFooter
-} from '@ionic/react';
+import { IonApp, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonList, IonMenu, IonMenuToggle, IonPage, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-import '@ionic/react/css/ionic.bundle.css';
-import { musicalNotes, search, logIn, logOut } from 'ionicons/icons';
+import { logIn, logOut, musicalNotes, search } from 'ionicons/icons';
 
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
 
+
+import { TrackPlayer } from './components/TrackPlayer/TrackPlayer';
+import { musickitConfig } from './services/musickit-config';
 import AlbumPage from './pages/album/Album';
 import BrowsePage from './pages/browse/Browse';
 import LandingPage from './pages/landing/Landing';
 import PlaylistPage from './pages/playlist/Playlist';
 import SearchPage from './pages/search/Search';
-import { useDispatch } from 'react-redux';
-import { musickitConfig } from './services/musickit-config';
+
+
+import '@ionic/react/css/ionic.bundle.css';
 import './theme/variables.css';
 import './App.css';
-import { TrackPlayer } from './components/TrackPlayer/TrackPlayer';
+
 
 musickitConfig.configure();
+
+
+
+
 export default function App() {
   const musicKitInstance = (window as any).MusicKit.getInstance();
   const musicKitGlobal = (window as any).MusicKit;
+
+  const dispatch = useDispatch();
   const [isLoggedIn, setState] = useState(musicKitInstance.isAuthorized);
   const logout = () => {
     console.log('attempting to log out')
@@ -49,44 +44,13 @@ export default function App() {
       setState(musicKitInstance.isAuthorized);
     })
   };
-  const dispatch = useDispatch();
 
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.playbackStateDidChange,
-    (e: any) => {
-      dispatch({ type: 'playbackStateDidChange', payload: e });
-    }
-  );
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.queueItemsDidChange,
-    (e: any) => {
-      dispatch({ type: 'queueItemsDidChange', payload: e });
-    }
-  );
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.mediaItemDidChange,
-    (e: any) => {
-      dispatch({ type: 'mediaItemDidChange', payload: e });
-    }
-  );
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.queuePositionDidChange,
-    (e: any) => {
-      dispatch({ type: 'queuePositionDidChange', payload: e });
-    }
-  );
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.playbackProgressDidChange,
-    (e: any) => {
-      dispatch({ type: 'playbackProgressDidChange', payload: e });
-    }
-  );
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.playbackDurationDidChange,
-    (e: any) => {
-      dispatch({ type: 'playbackDurationDidChange', payload: e });
-    }
-  );
+  musicKitInstance.addEventListener( musicKitGlobal.Events.playbackStateDidChange, (e: any) => { dispatch({ type: 'playbackStateDidChange', payload: e }); });
+  musicKitInstance.addEventListener( musicKitGlobal.Events.queueItemsDidChange, (e: any) => { dispatch({ type: 'queueItemsDidChange', payload: e }); });
+  musicKitInstance.addEventListener( musicKitGlobal.Events.mediaItemDidChange, (e: any) => { dispatch({ type: 'mediaItemDidChange', payload: e }); });
+  musicKitInstance.addEventListener( musicKitGlobal.Events.queuePositionDidChange, (e: any) => { dispatch({ type: 'queuePositionDidChange', payload: e }); });
+  musicKitInstance.addEventListener( musicKitGlobal.Events.playbackProgressDidChange, (e: any) => { dispatch({ type: 'playbackProgressDidChange', payload: e }); });
+  musicKitInstance.addEventListener( musicKitGlobal.Events.playbackDurationDidChange, (e: any) => { dispatch({ type: 'playbackDurationDidChange', payload: e }); });
 
   return (
     <IonApp>

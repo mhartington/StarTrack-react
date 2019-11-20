@@ -1,6 +1,6 @@
 .album-preview-card {
   display: block;
-  margin: auto;
+  /* margin: auto; */
   max-width: 170px;
   padding: 5px;
 }
