@@ -1,62 +1,81 @@
-import React, { Component } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import './LazyImg.css';
-export class LazyImg extends Component<any> {
-  observer: IntersectionObserver | null = null;
-  componentDidMount() {
-    if ('IntersectionObserver' in window) {
-      this.observer = new IntersectionObserver(this.onObserve.bind(this));
-      this.observer.observe(this.refs.img as Element);
-    } else {
-      setTimeout(() => this.preload(this.refs.img as Element), 200);
-    }
-  }
 
-  onObserve(data: IntersectionObserverEntry[]) {
-    if (data[0].isIntersecting) {
-      this.preload(data[0].target).then(() => {
-        if (this.observer) this.observer.disconnect();
+export function LazyImg(props: {
+  lazySrc: string;
+  className?: string;
+  alt?: string;
+}) {
+  const img = useRef(null);
+  const [inView, entry] = useIntersectionObserver(img);
+  useEffect(() => {
+      if(inView){
+        preload(img.current, props.lazySrc)
+        .then(() => entry.disconnect());
+      }
+
+    },
+    [props.lazySrc, inView, entry]
+  );
+
+  return (
+    <div className={(props.className ? props.className : '') + ' lazy-img'}>
+      <img ref={img} alt={props.alt} />
+    </div>
+  );
+}
+
+function useIntersectionObserver(ref: any) {
+  const [state, setState] = useState({
+    inView: false,
+    triggered: false,
+    entry: undefined
+  });
+
+  const observer = new IntersectionObserver((entries, observerInstance) => {
+    // checks to see if the element is intersecting
+    if (entries[0].intersectionRatio > 0) {
+      // if it is update the state, we set triggered as to not re-observe the element
+      setState({
+        inView: true,
+        triggered: true,
+        entry: observerInstance
       });
+      // unobserve the element
+      observerInstance.unobserve(ref.current);
     }
-    return;
-  }
+  });
 
-  applyImage(target: HTMLImageElement, src: string) {
-    return new Promise(resolve => {
-      target.src = src;
-      resolve();
-    });
-  }
+  useEffect(() => {
+    // check that the element exists, and has not already been triggered
+    if (ref.current && !state.triggered) {
+      observer.observe(ref.current);
+    }
 
-  fetchImage(url: string) {
+  });
+
+  return [state.inView, state.entry];
+}
+
+function applyImage(target: HTMLImageElement, src: string){
+  return new Promise(resolve => {
+    target.src = src;
+    target.onload = () => resolve();
+  })
+};
+
+function fetchImage(url: string) {
     return new Promise((resolve, reject) => {
       const image = new Image();
       image.src = url;
       image.onload = resolve;
       image.onerror = reject;
     });
-  }
+};
 
-  preload(targetEl: Element) {
-    return this.fetchImage(this.props.lazySrc)
-      .then(() =>
-        this.applyImage(targetEl as HTMLImageElement, this.props.lazySrc)
-      )
-      .then(() => {
-        if (this.refs.img) {
-          (this.refs.img as HTMLImageElement).classList.add('loaded');
-        }
-      });
-  }
+function preload(targetEl: Element, src: string) {
+  return fetchImage(src)
+  .then(() => applyImage(targetEl as HTMLImageElement, src))
+  .then(()=>targetEl.classList.add('loaded'));
+};
 
-  render() {
-    return (
-      <div
-        className={
-          (this.props.className ? this.props.className : '') + ' lazy-img'
-        }
-      >
-        <img ref="img" alt={this.props.alt} />
-      </div>
-    );
-  }
-}

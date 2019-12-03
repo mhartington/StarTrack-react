@@ -29,13 +29,15 @@ export default function SearchPage(_props: RouteComponentProps) {
     isLoading: false
   });
   const dispatch = useDispatch();
-
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const playSong = (index: number) => dispatch({ type: 'play', payload: { queue: musicState.songs, startIndex: index } });
+
   useEffect( () => {
       if (debouncedSearchTerm) {
+        setMusicState(m => {
+          return { ...m, isLoading: true }
+        });
         _props.history.replace({ search: debouncedSearchTerm });
-        setMusicState({ ...musicState, isLoading: true });
         musicKitService.search(debouncedSearchTerm).then(results => {
           setMusicState({
             songs: results['songs'] ? results['songs']['data'] : null,
@@ -47,7 +49,7 @@ export default function SearchPage(_props: RouteComponentProps) {
           });
         });
       }
-    }, [debouncedSearchTerm]);
+    }, [debouncedSearchTerm, _props.history, searchTerm]);
 
   const handleInput = async (e: any) => {
     const val = e.target.value;
