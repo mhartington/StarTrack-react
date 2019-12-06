@@ -15,8 +15,8 @@ export default function SongItem({ song, index, onClick}: any) {
     <IonItem className="song-item" onClick={onClick}>
       <IonThumbnail>
         <LazyImg
-          lazySrc={formatArtwork(song.attributes.artwork.url, 60)}
-          alt="Album Art"
+          lazySrc={song.attributes.artwork && song.attributes.artwork.url ? formatArtwork(song.attributes.artwork.url, 60) : null}
+          alt={`Album art for ${song.attributes.name}`}
         />
       </IonThumbnail>
       {index != null ? (

@@ -18,6 +18,7 @@ import { musicKitService } from '../../services/musickit-service';
 import AlbumPreviewItem from '../../components/AlbumPreviewItem/AlbumPreviewItem';
 import { Link } from 'react-router-dom';
 import SongItem from '../../components/SongItem/SongItem';
+import { ErrorShrug } from '../../components/ErrorShrug/ErrorShrug';
 
 export default function BrowsePage() {
   const dispatch = useDispatch();
@@ -27,20 +28,30 @@ export default function BrowsePage() {
     topPlaylists: null,
     topSongs: null
   });
+  const [isError, setIsError] = useState<boolean>(false);
   const playSong = (index: number) =>
     dispatch({
       type: 'play',
       payload: { queue: state.topSongs, startIndex: index }
     });
   useIonViewDidEnter(() => {
-    musicKitService.fetchChart().then(res =>
-      setState({
-        topAlbums: res.albums[0].data,
-        topPlaylists: res.playlists[0].data,
-        topSongs: res.songs[0].data,
-        isLoading: false
-      })
-    );
+    musicKitService
+      .fetchChart()
+      .then(res =>
+        setState({
+          topAlbums: res.albums[0].data,
+          topPlaylists: res.playlists[0].data,
+          topSongs: res.songs[0].data,
+          isLoading: false
+        })
+      )
+      .catch(err => {
+        setState(m => {
+          return { ...m, isLoading: false };
+        });
+        setIsError(true);
+        console.warn('HERE IS AN ERRO', err);
+      });
   });
   return (
     <IonPage>
@@ -52,7 +63,8 @@ export default function BrowsePage() {
           <IonTitle>Browse</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+        <IonContent>
+          { isError ? <ErrorShrug /> : null }
         {!state.isLoading ? (
           <>
             <div className="topAlbum ion-padding">

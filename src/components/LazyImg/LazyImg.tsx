@@ -1,23 +1,18 @@
 import React, { useRef, useEffect, useState } from 'react';
 import './LazyImg.css';
 
-export function LazyImg(props: {
-  lazySrc: string;
-  className?: string;
-  alt?: string;
-}) {
-  const img = useRef(null);
-  const [inView, entry] = useIntersectionObserver(img);
-  useEffect(() => {
-      if(inView){
-        preload(img.current, props.lazySrc)
-        .then(() => entry.disconnect());
-      }
+export function LazyImg(props: {lazySrc: string; className?: string; alt?: string; } = {lazySrc: "./assets/imgs/default.jpeg"}) {
+  const img = useRef<HTMLImageElement>(null);
 
+  const [inView, entry] = useIntersectionObserver(img);
+  useEffect(
+    () => {
+      if (inView) {
+        preload(img.current, props.lazySrc).then(() => entry.disconnect());
+      }
     },
     [props.lazySrc, inView, entry]
   );
-
   return (
     <div className={(props.className ? props.className : '') + ' lazy-img'}>
       <img ref={img} alt={props.alt} />
@@ -25,7 +20,7 @@ export function LazyImg(props: {
   );
 }
 
-function useIntersectionObserver(ref: any) {
+function useIntersectionObserver(ref: React.MutableRefObject<HTMLElement>) {
   const [state, setState] = useState({
     inView: false,
     triggered: false,
@@ -51,31 +46,29 @@ function useIntersectionObserver(ref: any) {
     if (ref.current && !state.triggered) {
       observer.observe(ref.current);
     }
-
   });
 
   return [state.inView, state.entry];
 }
 
-function applyImage(target: HTMLImageElement, src: string){
+function applyImage(target: HTMLImageElement, src: string) {
   return new Promise(resolve => {
     target.src = src;
     target.onload = () => resolve();
-  })
-};
+  });
+}
 
 function fetchImage(url: string) {
-    return new Promise((resolve, reject) => {
-      const image = new Image();
-      image.src = url;
-      image.onload = resolve;
-      image.onerror = reject;
-    });
-};
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.src = url;
+    image.onload = resolve;
+    image.onerror = reject;
+  });
+}
 
 function preload(targetEl: Element, src: string) {
   return fetchImage(src)
-  .then(() => applyImage(targetEl as HTMLImageElement, src))
-  .then(()=>targetEl.classList.add('loaded'));
-};
-
+    .then(() => applyImage(targetEl as HTMLImageElement, src))
+    .then(() => targetEl.classList.add('loaded'));
+}

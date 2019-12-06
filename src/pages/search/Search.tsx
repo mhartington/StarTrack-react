@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { ErrorShrug } from '../../components/ErrorShrug/ErrorShrug';
+import {
+  Link,
+  useLocation,
+  useHistory
+} from 'react-router-dom';
 import {
   IonHeader,
   IonContent,
@@ -20,8 +25,11 @@ import { musicKitService } from '../../services/musickit-service';
 import SongItem from '../../components/SongItem/SongItem';
 import useDebounce from '../../hooks/useDebounce';
 
-export default function SearchPage(_props: RouteComponentProps) {
-  const [searchTerm, setSearchTerm] = useState(_props.location.search.slice(1));
+export default function SearchPage() {
+  const location = useLocation();
+  const history = useHistory();
+  const [searchTerm, setSearchTerm] = useState( location.search.slice(1).replace('q=', ''));
+  const [isError, setIsError] = useState<boolean>(false);
   const [musicState, setMusicState] = useState({
     albums: null,
     songs: null,
@@ -31,14 +39,28 @@ export default function SearchPage(_props: RouteComponentProps) {
   const dispatch = useDispatch();
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const playSong = (index: number) => dispatch({ type: 'play', payload: { queue: musicState.songs, startIndex: index } });
-
+  const handleInput = async (e: any) => {
+    const val = e.target.value;
+    if (!val) {
+      history.replace({ search: '' });
+      setMusicState({
+        albums: null,
+        songs: null,
+        playlists: null,
+        isLoading: false
+      });
+      setSearchTerm('');
+      setIsError(false);
+      return;
+    }
+    setSearchTerm(val);
+  };
   useEffect( () => {
       if (debouncedSearchTerm) {
-        setMusicState(m => {
-          return { ...m, isLoading: true }
-        });
-        _props.history.replace({ search: debouncedSearchTerm });
-        musicKitService.search(debouncedSearchTerm).then(results => {
+        history.replace({ search: `?q=${debouncedSearchTerm}` });
+        setMusicState(m => { return { ...m, isLoading: true }; });
+        musicKitService.search(debouncedSearchTerm)
+        .then(results => {
           setMusicState({
             songs: results['songs'] ? results['songs']['data'] : null,
             albums: results['albums'] ? results['albums']['data'] : null,
@@ -47,25 +69,14 @@ export default function SearchPage(_props: RouteComponentProps) {
               : null,
             isLoading: false
           });
-        });
-      }
-    }, [debouncedSearchTerm, _props.history, searchTerm]);
+        }).catch(err => {
 
-  const handleInput = async (e: any) => {
-    const val = e.target.value;
-    if (!val) {
-      _props.history.replace({ search: '' });
-      setMusicState({
-        albums: null,
-        songs: null,
-        playlists: null,
-        isLoading: false
-      });
-      setSearchTerm('');
-      return;
-    }
-    setSearchTerm(val);
-  };
+          setMusicState(m => { return { ...m, isLoading: false }; });
+          setIsError(true)
+          console.warn("HERE IS AN ERRO", err) });
+      }
+    }, [debouncedSearchTerm, history]);
+
 
   return (
     <IonPage>
@@ -84,7 +95,8 @@ export default function SearchPage(_props: RouteComponentProps) {
           />
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+        <IonContent>
+          {isError ? <ErrorShrug /> : null}
         <IonList>
           {musicState.isLoading ? (
             <div className="ion-text-center ion-padding">
