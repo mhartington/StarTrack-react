@@ -14,6 +14,8 @@ ReactDOM.render(
 );
 
 register({
-  onUpdate: async (registration: ServiceWorkerRegistration) =>
-    await registration.update()
+  onUpdate: async (registration: ServiceWorkerRegistration) => {
+    await registration.update();
+    window.location.reload();
+  }
 });
