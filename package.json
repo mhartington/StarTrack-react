@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@ionic/react": "4.11.5",
-    "@ionic/react-router": "4.11.5",
+    "@ionic/react": "4.11.5-dev.201912070010.cd6efe0",
+    "@ionic/react-router": "4.11.5-dev.201912070010.cd6efe0",
     "@types/jest": "24.0.11",
     "@types/lodash.debounce": "4.0.6",
     "@types/node": "11.11.3",
