@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@ionic/react": "4.11.5-dev.201912070010.cd6efe0",
-    "@ionic/react-router": "4.11.5-dev.201912070010.cd6efe0",
+    "@ionic/react": "5.0.0-rc.2",
+    "@ionic/react-router": "5.0.0-rc.2",
     "@types/jest": "24.0.11",
     "@types/lodash.debounce": "4.0.6",
     "@types/node": "11.11.3",
@@ -13,7 +13,7 @@
     "@types/react-redux": "7.1.5",
     "@types/react-router": "5.1.2",
     "@types/react-router-dom": "5.1.3",
-    "ionicons": "4.6.3",
+    "ionicons": "5.0.0-17",
     "lodash.debounce": "4.0.8",
     "react": "16.11.0",
     "react-dom": "16.11.0",
@@ -21,7 +21,7 @@
     "react-redux": "7.1.3",
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
-    "react-scripts": "3.1.0",
+    "react-scripts": "3.3.1",
     "redux": "4.0.4",
     "rxjs": "6.5.2",
     "rxjs-hooks": "0.5.1",
@@ -33,9 +33,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": [
     ">0.2%",
     "not dead",
@@ -44,9 +41,9 @@
   ],
   "description": "An Ionic project",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "2.0.0",
-    "@typescript-eslint/parser": "2.0.0",
-    "eslint": "6.2.0",
-    "typescript-eslint-language-service": "1.4.0"
+    "@typescript-eslint/eslint-plugin": "2.19.0",
+    "@typescript-eslint/parser": "2.19.0",
+    "eslint": "6.8.0",
+    "typescript-eslint-language-service": "2.1.2"
   }
 }

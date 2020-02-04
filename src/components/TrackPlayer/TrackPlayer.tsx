@@ -7,7 +7,7 @@ import {
   IonSpinner,
   IonThumbnail
 } from '@ionic/react';
-import { fastforward, pause, play } from 'ionicons/icons';
+import { playForward, pause, play } from 'ionicons/icons';
 import React from 'react';
 import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';
 
@@ -62,7 +62,7 @@ export function TrackPlayer() {
           )}
         </IonButton>
         <IonButton color="primary" fill="clear" onClick={() => next()}>
-          <IonIcon icon={fastforward} slot="icon-only" />
+          <IonIcon icon={playForward} slot="icon-only" />
         </IonButton>
       </div>
     </div>

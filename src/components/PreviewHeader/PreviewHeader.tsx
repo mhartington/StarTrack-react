@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { LazyImg } from '../LazyImg/LazyImg';
 import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';
-import { play, more, shuffle } from 'ionicons/icons';
+import { play, ellipsisVertical, shuffle } from 'ionicons/icons';
 import { IonButton, IonIcon } from '@ionic/react';
 import './PreviewHeader.css';
 export function PreviewHeader({ album }: { album: any }) {
@@ -82,7 +82,7 @@ export function PreviewHeader({ album }: { album: any }) {
                   Shuffle
                 </IonButton>
                 <IonButton fill="outline">
-                  <IonIcon icon={more} slot="icon-only" />
+                  <IonIcon icon={ellipsisVertical} slot="icon-only" />
                 </IonButton>
               </div>
             </>
