@@ -32,7 +32,7 @@ export default function PlaylistPage(props: any) {
     });
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref="/browse" />
@@ -42,7 +42,7 @@ export default function PlaylistPage(props: any) {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent fullscreen={true}>
         <PreviewHeader album={state.collection ? state.collection : {}} />
         <IonList>
           {state.isLoading ? (

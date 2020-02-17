@@ -55,7 +55,7 @@ export default function BrowsePage() {
   });
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -63,7 +63,7 @@ export default function BrowsePage() {
           <IonTitle>Browse</IonTitle>
         </IonToolbar>
       </IonHeader>
-        <IonContent>
+        <IonContent fullscreen={true}>
           { isError ? <ErrorShrug /> : null }
         {!state.isLoading ? (
           <>

@@ -3,28 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@ionic/react": "5.0.0-rc.2",
-    "@ionic/react-router": "5.0.0-rc.2",
-    "@types/jest": "24.0.11",
-    "@types/lodash.debounce": "4.0.6",
-    "@types/node": "11.11.3",
-    "@types/react": "16.9.15",
-    "@types/react-dom": "16.9.4",
-    "@types/react-redux": "7.1.5",
-    "@types/react-router": "5.1.2",
-    "@types/react-router-dom": "5.1.3",
-    "ionicons": "5.0.0-17",
-    "lodash.debounce": "4.0.8",
+    "@ionic/react": "5.0.0",
+    "@ionic/react-router": "5.0.0",
+    "ionicons": "5.0.0",
     "react": "16.11.0",
     "react-dom": "16.11.0",
-    "react-hookstore": "1.4.2",
     "react-redux": "7.1.3",
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
-    "react-scripts": "3.3.1",
+    "react-scripts": "3.4.0",
     "redux": "4.0.4",
-    "rxjs": "6.5.2",
-    "rxjs-hooks": "0.5.1",
     "typescript": "3.5.3"
   },
   "scripts": {
@@ -44,6 +32,14 @@
     "@typescript-eslint/eslint-plugin": "2.19.0",
     "@typescript-eslint/parser": "2.19.0",
     "eslint": "6.8.0",
-    "typescript-eslint-language-service": "2.1.2"
+    "typescript-eslint-language-service": "2.1.2",
+    "@types/jest": "24.0.11",
+    "@types/lodash.debounce": "4.0.6",
+    "@types/node": "11.11.3",
+    "@types/react": "16.9.15",
+    "@types/react-dom": "16.9.4",
+    "@types/react-redux": "7.1.5",
+    "@types/react-router": "5.1.2",
+    "@types/react-router-dom": "5.1.3"
   }
 }

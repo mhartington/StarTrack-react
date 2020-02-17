@@ -80,7 +80,7 @@ export default function SearchPage() {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
@@ -95,7 +95,7 @@ export default function SearchPage() {
           />
         </IonToolbar>
       </IonHeader>
-        <IonContent>
+        <IonContent fullscreen={true}>
           {isError ? <ErrorShrug /> : null}
         <IonList>
           {musicState.isLoading ? (

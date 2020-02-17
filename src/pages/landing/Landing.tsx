@@ -12,12 +12,12 @@ import { musicalNotes } from 'ionicons/icons';
 export default function LandingPage(props: any) {
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonTitle>Star Track </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding ion-text-center">
+      <IonContent className="ion-padding ion-text-center" fullscreen={true}>
         <h3>
           Welcome to Star Track <IonIcon icon={musicalNotes} color="primary" />
         </h3>

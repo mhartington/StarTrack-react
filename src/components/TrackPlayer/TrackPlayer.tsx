@@ -63,6 +63,8 @@ export function TrackPlayer() {
         </IonButton>
         <IonButton color="primary" fill="clear" onClick={() => next()}>
           <IonIcon icon={playForward} slot="icon-only" />
+
+
         </IonButton>
       </div>
     </div>

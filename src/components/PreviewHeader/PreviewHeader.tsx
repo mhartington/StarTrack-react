@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { LazyImg } from '../LazyImg/LazyImg';
 import { formatArtwork } from '../../pipes/formatArtworkUrl/formatArtworkUrl';
-import { play, ellipsisVertical, shuffle } from 'ionicons/icons';
+import { play, shuffle, ellipsisVertical } from 'ionicons/icons';
 import { IonButton, IonIcon } from '@ionic/react';
 import './PreviewHeader.css';
 export function PreviewHeader({ album }: { album: any }) {

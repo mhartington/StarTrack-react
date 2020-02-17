@@ -20,7 +20,7 @@ export default function AlbumPage(props: any) {
     });
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref="/browse" />
@@ -30,7 +30,7 @@ export default function AlbumPage(props: any) {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent fullscreen={true}>
         <PreviewHeader album={state.collection ? state.collection : {}} />
         <IonList>
           {state.isLoading ? (
