@@ -12,7 +12,9 @@ import {
   IonButtons,
   IonMenuButton,
   useIonViewDidEnter,
-  IonPage
+  IonPage,
+  IonListHeader,
+  IonList
 } from '@ionic/react';
 import { musicKitService } from '../../services/musickit-service';
 import AlbumPreviewItem from '../../components/AlbumPreviewItem/AlbumPreviewItem';
@@ -63,25 +65,15 @@ export default function BrowsePage() {
           <IonTitle>Browse</IonTitle>
         </IonToolbar>
       </IonHeader>
-        <IonContent fullscreen={true}>
-          { isError ? <ErrorShrug /> : null }
+      <IonContent fullscreen={true}>
+        {isError ? <ErrorShrug /> : null}
         {!state.isLoading ? (
-          <>
+          <IonList>
             <div className="topAlbum ion-padding">
+              <IonListHeader>
+                <h1>Top Albums</h1>
+              </IonListHeader>
               <IonGrid fixed={true} className="ion-no-padding">
-                <IonRow>
-                  <IonCol>
-                    <h1
-                      style={{
-                        fontWeight: 700,
-                        marginTop: 5,
-                        marginBottom: 20
-                      }}
-                    >
-                      Top Albums
-                    </h1>
-                  </IonCol>
-                </IonRow>
                 <IonRow className="ion-justify-content-start">
                   {state.topAlbums.map((album: any, idx: number) => (
                     <IonCol
@@ -100,16 +92,10 @@ export default function BrowsePage() {
               </IonGrid>
             </div>
             <div className="topPlaylist ion-padding">
+              <IonListHeader>
+                <h1>Top Playlists</h1>
+              </IonListHeader>
               <IonGrid fixed={true} className="ion-no-padding">
-                <h1
-                  style={{
-                    fontWeight: 700,
-                    marginTop: 5,
-                    marginBottom: 20
-                  }}
-                >
-                  Top Playlists
-                </h1>
                 <IonRow className="ion-justify-content-start">
                   {state.topPlaylists.map((playlist: any, idx: number) => (
                     <IonCol
@@ -128,8 +114,10 @@ export default function BrowsePage() {
               </IonGrid>
             </div>
             <div className="topSongs">
+              <IonListHeader>
+                <h1>Top Songs</h1>
+              </IonListHeader>
               <IonGrid className="ion-no-padding" fixed={true}>
-                <h1 className="ion-padding">Top Songs</h1>
                 {state.topSongs.map((song: any, idx: number) => (
                   <SongItem
                     song={song}
@@ -140,7 +128,7 @@ export default function BrowsePage() {
                 ))}
               </IonGrid>
             </div>
-          </>
+          </IonList>
         ) : (
           <div className="ion-text-center ion-padding">
             <IonSpinner color="primary" />
