@@ -66,6 +66,11 @@ export default function BrowsePage() {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={true}>
+        <IonHeader collapse="condense"  className="ion-no-border">
+          <IonToolbar>
+            <IonTitle size="large">Browse</IonTitle>
+          </IonToolbar>
+        </IonHeader>
         {isError ? <ErrorShrug /> : null}
         {!state.isLoading ? (
           <IonList>
