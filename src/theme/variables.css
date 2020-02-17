@@ -96,7 +96,7 @@ a { text-decoration: none }
 }
 
 .transparent {
-  --background: var(--ion-background-color);
+  --background: transparent;
   --border-color: transparent;
 }
 

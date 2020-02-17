@@ -14,7 +14,6 @@ import {
   useIonViewDidEnter,
   IonPage,
   IonListHeader,
-  IonList
 } from '@ionic/react';
 import { musicKitService } from '../../services/musickit-service';
 import AlbumPreviewItem from '../../components/AlbumPreviewItem/AlbumPreviewItem';
@@ -67,13 +66,13 @@ export default function BrowsePage() {
       </IonHeader>
       <IonContent fullscreen={true}>
         <IonHeader collapse="condense"  className="ion-no-border">
-          <IonToolbar>
+          <IonToolbar className=" transparent">
             <IonTitle size="large">Browse</IonTitle>
           </IonToolbar>
         </IonHeader>
         {isError ? <ErrorShrug /> : null}
         {!state.isLoading ? (
-          <IonList>
+          <>
             <div className="topAlbum ion-padding">
               <IonListHeader>
                 <h1>Top Albums</h1>
@@ -133,7 +132,7 @@ export default function BrowsePage() {
                 ))}
               </IonGrid>
             </div>
-          </IonList>
+          </>
         ) : (
           <div className="ion-text-center ion-padding">
             <IonSpinner color="primary" />
