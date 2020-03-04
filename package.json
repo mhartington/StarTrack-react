@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@ionic/react": "5.0.0",
-    "@ionic/react-router": "5.0.0",
+    "@ionic/react": "5.0.4",
+    "@ionic/react-router": "5.0.4",
     "ionicons": "5.0.0",
     "react": "16.11.0",
     "react-dom": "16.11.0",

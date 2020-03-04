@@ -4,7 +4,7 @@ class MusickitConfig {
   configure() {
     // return new Promise(resolve => {
       (window as any).MusicKit.configure({
-        developerToken: process.env.REACT_APP_MUSICKITTOKEN,
+        developerToken: process.env.react_app_musickittoken,
         app: {
           name: 'Star Track',
           build: '1.0'
