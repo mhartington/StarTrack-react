@@ -1,25 +1,24 @@
-import { IonApp, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonList, IonMenu, IonMenuToggle, IonPage, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
+import { IonApp, IonContent, IonHeader, IonIcon, IonItem, IonList, IonMenu, IonMenuToggle, IonPage, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-
+import '@ionic/react/css/ionic.bundle.css';
 import { logIn, logOut, musicalNotes, search } from 'ionicons/icons';
-
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
-
-
+import './App.css';
 import { TrackPlayer } from './components/TrackPlayer/TrackPlayer';
-import { musickitConfig } from './services/musickit-config';
 import AlbumPage from './pages/album/Album';
 import BrowsePage from './pages/browse/Browse';
 import LandingPage from './pages/landing/Landing';
 import PlaylistPage from './pages/playlist/Playlist';
 import SearchPage from './pages/search/Search';
-
-
-import '@ionic/react/css/ionic.bundle.css';
+import { musickitConfig } from './services/musickit-config';
 import './theme/variables.css';
-import './App.css';
+
+
+
+
+
 
 
 musickitConfig.configure();
@@ -44,7 +43,6 @@ export default function App() {
       setState(musicKitInstance.isAuthorized);
     })
   };
-
   musicKitInstance.addEventListener( musicKitGlobal.Events.playbackStateDidChange, (e: any) => { dispatch({ type: 'playbackStateDidChange', payload: e }); });
   musicKitInstance.addEventListener( musicKitGlobal.Events.queueItemsDidChange, (e: any) => { dispatch({ type: 'queueItemsDidChange', payload: e }); });
   musicKitInstance.addEventListener( musicKitGlobal.Events.mediaItemDidChange, (e: any) => { dispatch({ type: 'mediaItemDidChange', payload: e }); });
@@ -108,9 +106,7 @@ export default function App() {
             </IonRouterOutlet>
           </IonPage>
         </IonSplitPane>
-        <IonFooter className="mh-footer" translucent={true}>
-          <TrackPlayer />
-        </IonFooter>
+        <TrackPlayer />
       </IonReactRouter>
     </IonApp>
   );

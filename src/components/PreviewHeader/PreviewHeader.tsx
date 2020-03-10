@@ -12,15 +12,21 @@ export function PreviewHeader({ album }: { album: any }) {
     duration: null
   });
   const playAlbum = (shouldShuffle: boolean) => {
-    dispatch({ type: 'playAlbum', payload: {collection: state.collection, shouldShuffle} })
-  }
+    dispatch({
+      type: 'playAlbum',
+      payload: { collection: state.collection, shouldShuffle }
+    });
+  };
   const formatDuration = (val: number) => {
-    const { hours, minutes } = (window as any).MusicKit.formattedMilliseconds( val);
+    const { hours, minutes } = (window as any).MusicKit.formattedMilliseconds(
+      val
+    );
     const hourTime = hours === 0 ? `` : `${hours} hours, `;
     const minutesTime = `${minutes} minutes`;
     return `${hourTime} ${minutesTime} `;
   };
-  useEffect( () => {
+  useEffect(
+    () => {
       if (Object.keys(album).length !== 0) {
         let duration = 0;
         for (const song of album.relationships.tracks.data) {
@@ -30,7 +36,9 @@ export function PreviewHeader({ album }: { album: any }) {
         }
         setState({ collection: album, duration });
       }
-    },[album]);
+    },
+    [album]
+  );
 
   return (
     <div
@@ -45,7 +53,14 @@ export function PreviewHeader({ album }: { album: any }) {
         )}")`
       }}
     >
-      <div className="artwork-header">
+      <div
+        className="artwork-header"
+        style={{
+          background: state.collection
+            ? `#${state.collection.attributes.artwork.bgColor}70`
+            : ''
+        }}
+      >
         <div className="album-info">
           {state.collection ? (
             <>
@@ -73,15 +88,15 @@ export function PreviewHeader({ album }: { album: any }) {
                   {state.collection.relationships.tracks.data.length} Songs,{' '}
                   {formatDuration(state.duration)}
                 </p>
-                <IonButton fill="outline" onClick={() => playAlbum(false)}>
+                <IonButton onClick={() => playAlbum(false)}>
                   <IonIcon slot="start" icon={play} />
                   Play
                 </IonButton>
-                <IonButton fill="outline" onClick={() => playAlbum(true)}>
+                <IonButton onClick={() => playAlbum(true)}>
                   <IonIcon icon={shuffle} slot="start" />
                   Shuffle
                 </IonButton>
-                <IonButton fill="outline">
+                <IonButton>
                   <IonIcon icon={ellipsisVertical} slot="icon-only" />
                 </IonButton>
               </div>

@@ -6,8 +6,8 @@
     "@ionic/react": "5.0.4",
     "@ionic/react-router": "5.0.4",
     "ionicons": "5.0.0",
-    "react": "16.11.0",
-    "react-dom": "16.11.0",
+    "react": "16.13.0",
+    "react-dom": "16.13.0",
     "react-redux": "7.1.3",
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
@@ -29,17 +29,17 @@
   ],
   "description": "An Ionic project",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "2.19.0",
-    "@typescript-eslint/parser": "2.19.0",
-    "eslint": "6.8.0",
-    "typescript-eslint-language-service": "2.1.2",
     "@types/jest": "24.0.11",
     "@types/lodash.debounce": "4.0.6",
     "@types/node": "11.11.3",
-    "@types/react": "16.9.15",
-    "@types/react-dom": "16.9.4",
+    "@types/react": "16.9.23",
+    "@types/react-dom": "16.9.5",
     "@types/react-redux": "7.1.5",
-    "@types/react-router": "5.1.2",
-    "@types/react-router-dom": "5.1.3"
+    "@types/react-router": "5.1.4",
+    "@types/react-router-dom": "5.1.3",
+    "@typescript-eslint/eslint-plugin": "2.19.0",
+    "@typescript-eslint/parser": "2.19.0",
+    "eslint": "6.8.0",
+    "typescript-eslint-language-service": "2.1.2"
   }
 }
