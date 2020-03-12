@@ -85,11 +85,11 @@ function rootReducer(
 
     case 'seekToTime':
       state.musicKitInstance.player.seekToTime(action.payload);
-      return state
+      return state;
 
     case 'playbackTimeDidChange':
-      console.log(action)
-      return {...state, playbackProgress: action.payload.currentPlaybackTime}
+      console.log(action);
+      return { ...state, playbackProgress: action.payload.currentPlaybackTime };
 
     case 'setMusicKitInstance':
       return { ...state, musicKitInstance: action.payload };

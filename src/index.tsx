@@ -6,12 +6,7 @@ import { register } from './serviceWorker';
 import store from './store';
 
 const rootElement = document.getElementById('root');
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  rootElement
-);
+ReactDOM.render( <Provider store={store}> <App /> </Provider>, rootElement);
 
 register({
   onUpdate: async (registration: ServiceWorkerRegistration) => {

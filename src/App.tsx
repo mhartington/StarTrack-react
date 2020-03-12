@@ -32,73 +32,68 @@ const App = () => {
   const dispatch = useDispatch();
   const musicKitGlobal = (window as any).MusicKit;
 
-  (window as any).MusicKit.configure({
-    developerToken: process.env.react_app_musickittoken,
-    app: {
-      name: 'Star Track',
-      build: '1.0'
-    }
-  });
-
-  const musicKitInstance = (window as any).MusicKit.getInstance();
+  document.addEventListener('musickitloaded', () => {
+    musicKitGlobal.configure({
+      developerToken: process.env.react_app_musickittoken,
+      app: {
+        name: 'Star Track React',
+        build: '1.0'
+      }
+    });
+  })
+  const musicKitInstance = musicKitGlobal.getInstance();
   dispatch({ type: 'setMusicKitInstance', payload: musicKitInstance });
 
+
   const [isLoggedIn, setState] = useState(musicKitInstance.isAuthorized);
-  const logout = () => {
-    console.log('attempting to log out');
-    return musicKitInstance.unauthorize().then(() => {
-      setState(musicKitInstance.isAuthorized);
-    });
+
+  const logout = async () => {
+    await musicKitInstance.unauthorize();
+    setState(musicKitInstance.isAuthorized);
   };
-  const login = () => {
-    return musicKitInstance.authorize().then(() => {
-      setState(musicKitInstance.isAuthorized);
-    });
+  const login = async () => {
+    await musicKitInstance.authorize();
+    setState(musicKitInstance.isAuthorized);
   };
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.playbackStateDidChange,
-    (e: any) => {
-      dispatch({ type: 'playbackStateDidChange', payload: e });
-    }
-  );
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.queueItemsDidChange,
-    (e: any) => {
-      dispatch({ type: 'queueItemsDidChange', payload: e });
-    }
-  );
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.mediaItemDidChange,
-    (e: any) => {
-      dispatch({ type: 'mediaItemDidChange', payload: e });
-    }
-  );
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.queuePositionDidChange,
-    (e: any) => {
-      dispatch({ type: 'queuePositionDidChange', payload: e });
-    }
-  );
+
   // musicKitInstance.addEventListener(
-  //   musicKitGlobal.Events.playbackProgressDidChange,
+  //   musicKitGlobal.Events.playbackStateDidChange,
   //   (e: any) => {
-  //     dispatch({ type: 'playbackProgressDidChange', payload: e });
+  //     dispatch({ type: 'playbackStateDidChange', payload: e });
   //   }
   // );
-
-    musicKitInstance.addEventListener(
-    musicKitGlobal.Events.playbackTimeDidChange,
-    (e: any) => {
-      dispatch({ type: 'playbackTimeDidChange', payload: e });
-    }
-  );
-
-  musicKitInstance.addEventListener(
-    musicKitGlobal.Events.playbackDurationDidChange,
-    (e: any) => {
-      dispatch({ type: 'playbackDurationDidChange', payload: e });
-    }
-  );
+  // musicKitInstance.addEventListener(
+  //   musicKitGlobal.Events.queueItemsDidChange,
+  //   (e: any) => {
+  //     dispatch({ type: 'queueItemsDidChange', payload: e });
+  //   }
+  // );
+  // musicKitInstance.addEventListener(
+  //   musicKitGlobal.Events.mediaItemDidChange,
+  //   (e: any) => {
+  //     dispatch({ type: 'mediaItemDidChange', payload: e });
+  //   }
+  // );
+  // musicKitInstance.addEventListener(
+  //   musicKitGlobal.Events.queuePositionDidChange,
+  //   (e: any) => {
+  //     dispatch({ type: 'queuePositionDidChange', payload: e });
+  //   }
+  // );
+  //
+  //   musicKitInstance.addEventListener(
+  //   musicKitGlobal.Events.playbackTimeDidChange,
+  //   (e: any) => {
+  //     dispatch({ type: 'playbackTimeDidChange', payload: e });
+  //   }
+  // );
+  //
+  // musicKitInstance.addEventListener(
+  //   musicKitGlobal.Events.playbackDurationDidChange,
+  //   (e: any) => {
+  //     dispatch({ type: 'playbackDurationDidChange', payload: e });
+  //   }
+  // );
 
   return (
     <IonApp>
