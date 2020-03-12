@@ -1,10 +1,9 @@
 import { createStore } from 'redux';
 import { PlaybackStates } from '../types';
-let musicKitGlobal = (window as any).MusicKit.getInstance();
-let musicKitInstance = (window as any).MusicKit.getInstance();
 
 const defaultState = {
   bitrate: 256,
+  musicKitInstance: null,
   playbackState: PlaybackStates.NONE,
   playbackDuration: 0,
   playbackProgress: 0,
@@ -34,33 +33,40 @@ const defaultState = {
     ]
   }
 };
-function rootReducer( state = defaultState, action: { type: string; payload?: any }) {
+function rootReducer(
+  state = defaultState,
+  action: { type: string; payload?: any }
+) {
   switch (action.type) {
     case 'play':
-      setQueueFromItems(action.payload.queue, action.payload.startIndex);
+      setQueueFromItems(
+        state.musicKitInstance,
+        action.payload.queue,
+        action.payload.startIndex
+      );
       state = { ...state, queuePosition: action.payload.startIndex };
       return state;
     case 'playAlbum':
-      toggleShuffle(action.payload.shouldShuffle);
-      console.log(action.payload)
-      setQueueFromItems(action.payload.collection.relationships.tracks.data);
+      toggleShuffle(state.musicKitInstance, action.payload.shouldShuffle);
+      setQueueFromItems(
+        state.musicKitInstance,
+        action.payload.collection.relationships.tracks.data
+      );
       return state;
 
     case 'togglePlay':
-      if (musicKitGlobal.player.playbackState === PlaybackStates.PAUSED) {
-        musicKitGlobal.player.play();
-      } else {
-        musicKitGlobal.player.pause();
-      }
+      state.musicKitInstance.player.playbackState === PlaybackStates.PAUSED
+        ? state.musicKitInstance.player.play()
+        : state.musicKitInstance.player.pause();
       return state;
 
     case 'next':
-      next();
+      next(state.musicKitInstance);
       return state;
 
     case 'error':
       console.log('error');
-      return state
+      return state;
 
     case 'playbackStateDidChange':
       return playbackStateDidChange(state, action.payload);
@@ -75,11 +81,18 @@ function rootReducer( state = defaultState, action: { type: string; payload?: an
       return queuePositionDidChange(state, action.payload);
 
     case 'playbackDurationDidChange':
-      return {...state, playbackDuration: action.payload.duration}
+      return { ...state, playbackDuration: action.payload.duration };
 
-    case 'playbackProgressDidChange':
-      return {...state, playbackProgress: (action.payload.progress * 100)}
+    case 'seekToTime':
+      state.musicKitInstance.player.seekToTime(action.payload);
+      return state
 
+    case 'playbackTimeDidChange':
+      console.log(action)
+      return {...state, playbackProgress: action.payload.currentPlaybackTime}
+
+    case 'setMusicKitInstance':
+      return { ...state, musicKitInstance: action.payload };
 
     default:
       return state;
@@ -88,50 +101,54 @@ function rootReducer( state = defaultState, action: { type: string; payload?: an
 
 export default createStore(rootReducer);
 
-const setQueueFromItems = (items: any[], startPosition = 0) => {
+const setQueueFromItems = (
+  musicKitInstance,
+  items: any[],
+  startPosition = 0
+) => {
   items.map(item => (item.container = { id: item.id }));
   return musicKitInstance
     .setQueue({ items })
-    .then(() => changeQueuePosition(startPosition));
+    .then(() => changeQueuePosition(musicKitInstance, startPosition));
 };
-const changeQueuePosition = (index: number) => {
+const changeQueuePosition = (musicKitInstance, index: number) => {
   musicKitInstance.changeToMediaAtIndex(index);
 };
-const playbackStateDidChange = (state, payload) => {
+const playbackStateDidChange = (state, payload: { state: string | number }) => {
   const playbackState = PlaybackStates[PlaybackStates[payload.state]];
   return { ...state, playbackState };
 };
-const toggleShuffle = (shouldShuffle: boolean) => {
-  if(!!shouldShuffle){
-
-    musicKitGlobal.player.shuffleMode = 1
+const toggleShuffle = (musicKitInstance, shouldShuffle: boolean) => {
+  if (!!shouldShuffle) {
+    musicKitInstance.player.shuffleMode = 1;
   } else {
-    musicKitGlobal.player.shuffleMode = 0
+    musicKitInstance.player.shuffleMode = 0;
   }
-}
+};
 
 // Global even listeners
 const mediaItemDidChange = (state, payload) => {
   return { ...state, nowPlayingItem: payload.item };
 };
-const next = () => {
-  setTimeout(() => {musicKitGlobal.player.skipToNextItem()}, 0)
-  return
-}
+const next = musicKitInstance => {
+  setTimeout(() => {
+    musicKitInstance.player.skipToNextItem();
+  }, 0);
+  return;
+};
 const queueItemsDidChange = (state, payload) => {
   return {
     ...state,
-    queue: musicKitGlobal.player.queue.items.slice(payload.position + 1)
+    queue: state.musicKitInstance.player.queue.items.slice(payload.position + 1)
   };
 };
 const queuePositionDidChange = (state, payload) => {
   return {
     ...state,
     queuePosition: payload.position + 1,
-    queue: musicKitGlobal.player.queue.items.slice(payload.position + 1)
+    queue: state.musicKitInstance.player.queue.items.slice(payload.position + 1)
   };
 };
-
 
 // const mediaPlaybackError = (event: any) => {
 //   console.log('mediaPlayBackError', event);

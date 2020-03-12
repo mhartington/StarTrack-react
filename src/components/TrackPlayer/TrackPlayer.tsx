@@ -21,13 +21,15 @@ export function TrackPlayer() {
   const dispatch = useDispatch();
   const [show, shouldShow] = useState(false);
   const togglePlay = e => {
-    console.log(e);
     e.stopPropagation();
     dispatch({ type: 'togglePlay' });
   };
   const next = e => {
     e.stopPropagation();
     dispatch({ type: 'next' });
+  };
+  const handleRangeMove = e => {
+    dispatch({ type: 'seekToTime', payload: e.target.value });
   };
   return (
     <IonFooter
@@ -44,11 +46,10 @@ export function TrackPlayer() {
                 alt="Song art"
               />
             </IonThumbnail>
-
             <IonLabel>
-              <p>{store.nowPlayingItem.title || 'foo'}</p>
+              <p>{store.nowPlayingItem.title}</p>
               <IonNote color="primary">
-                {store.nowPlayingItem.artistName || 'bar'}
+                {store.nowPlayingItem.artistName}
               </IonNote>
             </IonLabel>
           </div>
@@ -58,6 +59,7 @@ export function TrackPlayer() {
             step={1}
             value={store.playbackProgress}
             onClick={e => e.stopPropagation()}
+            onPointerUp={e => handleRangeMove(e)}
             disabled={
               store.playbackDuration === 0 ||
               store.isLoading ||

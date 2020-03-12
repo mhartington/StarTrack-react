@@ -12,15 +12,15 @@ import {
   useIonViewWillEnter,
   IonPage
 } from '@ionic/react';
-import { musicKitService } from '../../services/musickit-service';
+import { fetchPlaylist } from '../../services/musickit-service';
 import { PreviewHeader } from '../../components/PreviewHeader/PreviewHeader';
 import SongItem from '../../components/SongItem/SongItem';
 export default function PlaylistPage(props: any) {
   const [state, setState] = useState({ isLoading: true, collection: null });
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useIonViewWillEnter(() => {
     const id = props.match.params.playlistId;
-    musicKitService.fetchPlaylist(id).then(res => {
+    fetchPlaylist(id).then(res => {
       setState({ isLoading: false, collection: res });
     });
   });
@@ -28,7 +28,10 @@ export default function PlaylistPage(props: any) {
   const playSong = (index: number) =>
     dispatch({
       type: 'play',
-      payload: { queue: state.collection.relationships.tracks.data, startIndex: index }
+      payload: {
+        queue: state.collection.relationships.tracks.data,
+        startIndex: index
+      }
     });
   return (
     <IonPage>

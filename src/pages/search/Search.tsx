@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { ErrorShrug } from '../../components/ErrorShrug/ErrorShrug';
-import {
-  Link,
-  useLocation,
-  useHistory
-} from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import {
   IonHeader,
   IonContent,
@@ -21,14 +17,16 @@ import {
   IonSpinner,
   IonPage
 } from '@ionic/react';
-import { musicKitService } from '../../services/musickit-service';
+import { search } from '../../services/musickit-service';
 import SongItem from '../../components/SongItem/SongItem';
 import useDebounce from '../../hooks/useDebounce';
 
 export default function SearchPage() {
   const location = useLocation();
   const history = useHistory();
-  const [searchTerm, setSearchTerm] = useState( location.search.slice(1).replace('q=', ''));
+  const [searchTerm, setSearchTerm] = useState(
+    location.search.slice(1).replace('q=', '')
+  );
   const [isError, setIsError] = useState<boolean>(false);
   const [musicState, setMusicState] = useState({
     albums: null,
@@ -38,7 +36,13 @@ export default function SearchPage() {
   });
   const dispatch = useDispatch();
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
-  const playSong = (index: number) => dispatch({ type: 'play', payload: { queue: musicState.songs, startIndex: index } });
+  const playSong = (index: number) => {
+    dispatch({
+      type: 'play',
+      payload: { queue: musicState.songs, startIndex: index }
+    });
+  };
+
   const handleInput = async (e: any) => {
     const val = e.target.value;
     if (!val) {
@@ -55,11 +59,13 @@ export default function SearchPage() {
     }
     setSearchTerm(val);
   };
-  useEffect( () => {
-      if (debouncedSearchTerm) {
-        history.replace({ search: `?q=${debouncedSearchTerm}` });
-        setMusicState(m => { return { ...m, isLoading: true }; });
-        musicKitService.search(debouncedSearchTerm)
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      history.replace({ search: `?q=${debouncedSearchTerm}` });
+      setMusicState(m => {
+        return { ...m, isLoading: true };
+      });
+      search(debouncedSearchTerm)
         .then(results => {
           setMusicState({
             songs: results['songs'] ? results['songs']['data'] : null,
@@ -69,14 +75,16 @@ export default function SearchPage() {
               : null,
             isLoading: false
           });
-        }).catch(err => {
-
-          setMusicState(m => { return { ...m, isLoading: false }; });
-          setIsError(true)
-          console.warn("HERE IS AN ERRO", err) });
-      }
-    }, [debouncedSearchTerm, history]);
-
+        })
+        .catch(err => {
+          setMusicState(m => {
+            return { ...m, isLoading: false };
+          });
+          setIsError(true);
+          console.warn('HERE IS AN ERRO', err);
+        });
+    }
+  }, [debouncedSearchTerm, history]);
 
   return (
     <IonPage>
@@ -95,8 +103,8 @@ export default function SearchPage() {
           />
         </IonToolbar>
       </IonHeader>
-        <IonContent fullscreen={true}>
-          {isError ? <ErrorShrug /> : null}
+      <IonContent fullscreen={true}>
+        {isError ? <ErrorShrug /> : null}
         <IonList>
           {musicState.isLoading ? (
             <div className="ion-text-center ion-padding">

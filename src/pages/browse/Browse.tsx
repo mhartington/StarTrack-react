@@ -16,7 +16,7 @@ import {
   IonListHeader,
   IonList
 } from '@ionic/react';
-import { musicKitService } from '../../services/musickit-service';
+import { fetchChart } from '../../services/musickit-service';
 import AlbumPreviewItem from '../../components/AlbumPreviewItem/AlbumPreviewItem';
 import { Link } from 'react-router-dom';
 import SongItem from '../../components/SongItem/SongItem';
@@ -37,8 +37,7 @@ export default function BrowsePage() {
       payload: { queue: state.topSongs, startIndex: index }
     });
   useIonViewDidEnter(() => {
-    musicKitService
-      .fetchChart()
+      fetchChart()
       .then(res =>
         setState({
           topAlbums: res.albums[0].data,

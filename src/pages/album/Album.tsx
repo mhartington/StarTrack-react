@@ -1,22 +1,38 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { IonHeader, IonTitle, IonToolbar, IonContent, IonList, IonSpinner, IonBackButton, IonButtons, useIonViewDidEnter, IonPage } from '@ionic/react';
-import { musicKitService } from '../../services/musickit-service';
+import {
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonContent,
+  IonList,
+  IonSpinner,
+  IonBackButton,
+  IonButtons,
+  useIonViewDidEnter,
+  IonPage
+} from '@ionic/react';
+
+import { fetchAlbum } from '../../services/musickit-service';
 import { PreviewHeader } from '../../components/PreviewHeader/PreviewHeader';
 import SongItem from '../../components/SongItem/SongItem';
+
 export default function AlbumPage(props: any) {
   const [state, setState] = useState({ isLoading: true, collection: null });
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useIonViewDidEnter(() => {
     const id = props.match.params.albumId;
-    musicKitService.fetchAlbum(id).then(res => {
+    fetchAlbum(id).then(res => {
       setState({ isLoading: false, collection: res });
     });
   });
   const playSong = (index: number) =>
     dispatch({
       type: 'play',
-      payload: { queue: state.collection.relationships.tracks.data, startIndex: index }
+      payload: {
+        queue: state.collection.relationships.tracks.data,
+        startIndex: index
+      }
     });
   return (
     <IonPage>
