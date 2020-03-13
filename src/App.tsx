@@ -1,26 +1,14 @@
-import {
-  IonApp,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonList,
-  IonMenu,
-  IonMenuToggle,
-  IonPage,
-  IonRouterOutlet,
-  IonSplitPane,
-  IonTitle,
-  IonToolbar
-} from '@ionic/react';
+import { IonApp, IonContent, IonHeader, IonIcon, IonItem, IonList, IonMenu, IonMenuToggle, IonPage, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import '@ionic/react/css/ionic.bundle.css';
 import { logIn, logOut, musicalNotes, search } from 'ionicons/icons';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
+
 import './App.css';
 import { TrackPlayer } from './components/TrackPlayer/TrackPlayer';
+import { useMusicKit } from './hooks/useMusicKit';
 import AlbumPage from './pages/album/Album';
 import BrowsePage from './pages/browse/Browse';
 import LandingPage from './pages/landing/Landing';
@@ -28,72 +16,29 @@ import PlaylistPage from './pages/playlist/Playlist';
 import SearchPage from './pages/search/Search';
 import './theme/variables.css';
 
-const App = () => {
+function App(){
+
+  const [mkGlobal, mkInstance] = useMusicKit();
   const dispatch = useDispatch();
-  const musicKitGlobal = (window as any).MusicKit;
 
-  document.addEventListener('musickitloaded', () => {
-    musicKitGlobal.configure({
-      developerToken: process.env.react_app_musickittoken,
-      app: {
-        name: 'Star Track React',
-        build: '1.0'
-      }
-    });
-  })
-  const musicKitInstance = musicKitGlobal.getInstance();
-  dispatch({ type: 'setMusicKitInstance', payload: musicKitInstance });
-
-
-  const [isLoggedIn, setState] = useState(musicKitInstance.isAuthorized);
+  dispatch({ type: 'setMusicKitInstance', payload: mkInstance });
+  const [isLoggedIn, setState] = useState(mkInstance.isAuthorized);
 
   const logout = async () => {
-    await musicKitInstance.unauthorize();
-    setState(musicKitInstance.isAuthorized);
+    await mkInstance.unauthorize();
+    setState(false);
   };
   const login = async () => {
-    await musicKitInstance.authorize();
-    setState(musicKitInstance.isAuthorized);
+    await mkInstance.authorize();
+    setState(mkInstance.isAuthorized);
   };
 
-  // musicKitInstance.addEventListener(
-  //   musicKitGlobal.Events.playbackStateDidChange,
-  //   (e: any) => {
-  //     dispatch({ type: 'playbackStateDidChange', payload: e });
-  //   }
-  // );
-  // musicKitInstance.addEventListener(
-  //   musicKitGlobal.Events.queueItemsDidChange,
-  //   (e: any) => {
-  //     dispatch({ type: 'queueItemsDidChange', payload: e });
-  //   }
-  // );
-  // musicKitInstance.addEventListener(
-  //   musicKitGlobal.Events.mediaItemDidChange,
-  //   (e: any) => {
-  //     dispatch({ type: 'mediaItemDidChange', payload: e });
-  //   }
-  // );
-  // musicKitInstance.addEventListener(
-  //   musicKitGlobal.Events.queuePositionDidChange,
-  //   (e: any) => {
-  //     dispatch({ type: 'queuePositionDidChange', payload: e });
-  //   }
-  // );
-  //
-  //   musicKitInstance.addEventListener(
-  //   musicKitGlobal.Events.playbackTimeDidChange,
-  //   (e: any) => {
-  //     dispatch({ type: 'playbackTimeDidChange', payload: e });
-  //   }
-  // );
-  //
-  // musicKitInstance.addEventListener(
-  //   musicKitGlobal.Events.playbackDurationDidChange,
-  //   (e: any) => {
-  //     dispatch({ type: 'playbackDurationDidChange', payload: e });
-  //   }
-  // );
+  mkInstance.addEventListener(mkGlobal.Events.playbackStateDidChange, (e: any) => { dispatch({ type: 'playbackStateDidChange', payload: e }); });
+  mkInstance.addEventListener(mkGlobal.Events.queueItemsDidChange, (e: any) => { dispatch({ type: 'queueItemsDidChange', payload: e }); });
+  mkInstance.addEventListener(mkGlobal.Events.mediaItemDidChange, (e: any) => { dispatch({ type: 'mediaItemDidChange', payload: e }); });
+  mkInstance.addEventListener(mkGlobal.Events.queuePositionDidChange, (e: any) => { dispatch({ type: 'queuePositionDidChange', payload: e }); });
+  mkInstance.addEventListener(mkGlobal.Events.playbackTimeDidChange, (e: any) => { dispatch({ type: 'playbackTimeDidChange', payload: e }); });
+  mkInstance.addEventListener(mkGlobal.Events.playbackDurationDidChange, (e: any) => { dispatch({ type: 'playbackDurationDidChange', payload: e }); });
 
   return (
     <IonApp>
