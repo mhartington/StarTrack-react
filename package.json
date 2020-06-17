@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@ionic/react": "5.0.4",
-    "@ionic/react-router": "5.0.4",
+    "@capacitor/core": "2.0.1",
+    "@capacitor/ios": "^2.0.1",
+    "@ionic/react": "^5.3.0-dev.202006171722.356d840",
+    "@ionic/react-router": "^5.3.0-dev.202006171722.356d840",
     "ionicons": "5.0.0",
     "react": "16.13.0",
     "react-dom": "16.13.0",
@@ -29,6 +31,7 @@
   ],
   "description": "An Ionic project",
   "devDependencies": {
+    "@capacitor/cli": "2.0.1",
     "@types/jest": "24.0.11",
     "@types/lodash.debounce": "4.0.6",
     "@types/node": "11.11.3",

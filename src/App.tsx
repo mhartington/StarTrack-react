@@ -1,12 +1,30 @@
-import { IonApp, IonContent, IonHeader, IonIcon, IonItem, IonList, IonMenu, IonMenuToggle, IonPage, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
+import {
+  IonApp,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonList,
+  IonMenu,
+  IonMenuToggle,
+  IonPage,
+  IonRouterOutlet,
+  IonSplitPane,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import '@ionic/react/css/ionic.bundle.css';
 import { logIn, logOut, musicalNotes, search } from 'ionicons/icons';
+
+import '@ionic/react/css/ionic.bundle.css';
+import './theme/variables.css';
+import './App.css';
+
 import React, { useState } from 'react';
+
 import { useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
 
-import './App.css';
 import { TrackPlayer } from './components/TrackPlayer/TrackPlayer';
 import { useMusicKit } from './hooks/useMusicKit';
 import AlbumPage from './pages/album/Album';
@@ -14,10 +32,8 @@ import BrowsePage from './pages/browse/Browse';
 import LandingPage from './pages/landing/Landing';
 import PlaylistPage from './pages/playlist/Playlist';
 import SearchPage from './pages/search/Search';
-import './theme/variables.css';
 
-function App(){
-
+function App() {
   const [mkGlobal, mkInstance] = useMusicKit();
   const dispatch = useDispatch();
 
@@ -104,5 +120,5 @@ function App(){
       </IonReactRouter>
     </IonApp>
   );
-};
+}
 export default App;

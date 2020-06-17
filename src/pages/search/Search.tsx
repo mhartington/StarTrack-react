@@ -35,7 +35,9 @@ export default function SearchPage() {
     isLoading: false
   });
   const dispatch = useDispatch();
+
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+
   const playSong = (index: number) => {
     dispatch({
       type: 'play',
@@ -76,12 +78,11 @@ export default function SearchPage() {
             isLoading: false
           });
         })
-        .catch(err => {
+        .catch(() => {
           setMusicState(m => {
             return { ...m, isLoading: false };
           });
           setIsError(true);
-          console.warn('HERE IS AN ERRO', err);
         });
     }
   }, [debouncedSearchTerm, history]);

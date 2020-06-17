@@ -1,5 +1,7 @@
 {
   "name": "StarTrack-react",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react"
 }
