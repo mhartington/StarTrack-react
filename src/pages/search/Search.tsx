@@ -68,13 +68,11 @@ export default function SearchPage() {
         return { ...m, isLoading: true };
       });
       search(debouncedSearchTerm)
-        .then(results => {
+        .then(res => {
           setMusicState({
-            songs: results['songs'] ? results['songs']['data'] : null,
-            albums: results['albums'] ? results['albums']['data'] : null,
-            playlists: results['playlists']
-              ? results['playlists']['data']
-              : null,
+            albums: res?.albums.data ?? null,
+            songs: res?.songs?.data ?? null,
+            playlists: res?.playlists?.data ?? null,
             isLoading: false
           });
         })

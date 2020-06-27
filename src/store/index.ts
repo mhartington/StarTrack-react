@@ -12,6 +12,7 @@ const defaultState = {
   repeatMode: 0,
   isShuffling: false,
   infiniteLoadTimeout: null,
+  backgroundColor: null,
   nowPlayingItem: {
     albumName: '',
     artistName: '',
@@ -33,25 +34,17 @@ const defaultState = {
     ]
   }
 };
-function rootReducer(
-  state = defaultState,
-  action: { type: string; payload?: any }
-) {
+function rootReducer( state = defaultState, action: { type: string; payload?: any }) {
   switch (action.type) {
+
     case 'play':
-      setQueueFromItems(
-        state.musicKitInstance,
-        action.payload.queue,
-        action.payload.startIndex
-      );
+      setQueueFromItems( state.musicKitInstance, action.payload.queue, action.payload.startIndex);
       state = { ...state, queuePosition: action.payload.startIndex };
       return state;
+
     case 'playAlbum':
       toggleShuffle(state.musicKitInstance, action.payload.shouldShuffle);
-      setQueueFromItems(
-        state.musicKitInstance,
-        action.payload.collection.relationships.tracks.data
-      );
+      setQueueFromItems( state.musicKitInstance, action.payload.collection.relationships.tracks.data);
       return state;
 
     case 'togglePlay':
@@ -99,26 +92,22 @@ function rootReducer(
   }
 }
 
-export default createStore(rootReducer);
+export default createStore(rootReducer,  (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__());
 
-const setQueueFromItems = (
-  musicKitInstance,
-  items: any[],
-  startPosition = 0
-) => {
-  items.map(item => (item.container = { id: item.id }));
+const setQueueFromItems = ( musicKitInstance: any, items: any[], startPosition = 0) => {
+  const newItems = items.map(item => (item.container = { id: item.id }));
   return musicKitInstance
-    .setQueue({ items })
+    .setQueue({ items: newItems })
     .then(() => changeQueuePosition(musicKitInstance, startPosition));
 };
-const changeQueuePosition = (musicKitInstance, index: number) => {
+const changeQueuePosition = (musicKitInstance:any, index: number) => {
   musicKitInstance.changeToMediaAtIndex(index);
 };
 const playbackStateDidChange = (state, payload: { state: string | number }) => {
   const playbackState = PlaybackStates[PlaybackStates[payload.state]];
   return { ...state, playbackState };
 };
-const toggleShuffle = (musicKitInstance, shouldShuffle: boolean) => {
+const toggleShuffle = (musicKitInstance:any, shouldShuffle: boolean) => {
   if (!!shouldShuffle) {
     musicKitInstance.player.shuffleMode = 1;
   } else {
@@ -130,7 +119,7 @@ const toggleShuffle = (musicKitInstance, shouldShuffle: boolean) => {
 const mediaItemDidChange = (state, payload) => {
   return { ...state, nowPlayingItem: payload.item };
 };
-const next = musicKitInstance => {
+const next = (musicKitInstance: any) => {
   setTimeout(() => {
     musicKitInstance.player.skipToNextItem();
   }, 0);

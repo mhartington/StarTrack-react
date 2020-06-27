@@ -6,7 +6,8 @@ import {
   IonRange,
   IonSpinner,
   IonThumbnail,
-  IonFooter
+  IonFooter,
+  CreateAnimation
 } from '@ionic/react';
 import { playForward, pause, play, playBack } from 'ionicons/icons';
 import React, { useState } from 'react';
@@ -17,20 +18,23 @@ import './TrackPlayer.css';
 import { PlaybackStates } from '../../types';
 
 export function TrackPlayer() {
+
   const store: any = useSelector(state => state);
   const dispatch = useDispatch();
   const [show, shouldShow] = useState(false);
-  const togglePlay = e => {
+
+  const togglePlay = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>) => {
     e.stopPropagation();
     dispatch({ type: 'togglePlay' });
   };
-  const next = e => {
+  const next = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>) => {
     e.stopPropagation();
     dispatch({ type: 'next' });
   };
-  const handleRangeMove = e => {
+  const handleRangeMove = (e: any) => {
     dispatch({ type: 'seekToTime', payload: e.target.value });
   };
+
   return (
     <IonFooter
       onClick={() => shouldShow(!show)}
